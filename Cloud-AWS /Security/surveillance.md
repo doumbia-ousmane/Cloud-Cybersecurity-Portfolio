@@ -1,183 +1,483 @@
-# Surveillance d’une instance EC2 avec Amazon CloudWatch et SNS
 
-#### 📌 Présentation
-Dans les infrastructures cloud modernes, la journalisation et la surveillance sont deux piliers fondamentaux pour garantir à la fois des performances optimales et un cadre de sécurité robuste [3]. Ce projet présente la mise en œuvre d'une solution de supervision et d'alerte automatisée sur AWS [4]. 
+Conversation avec Gemini
+je veux le code complet de cette documentation en gardant la même structure sans modifier ni ajouter quelque chose parce que je veux la copié dans un fichier .md dans mon portfolio github
 
-L'objectif principal est de configurer une alarme Amazon CloudWatch basée sur l'utilisation du processeur (CPU) d'une instance Amazon EC2 ("Stress Test") et de l'associer à une notification par e-mail en temps réel via Amazon Simple Notification Service (Amazon SNS) [4]. Pour valider le bon fonctionnement du dispositif, un test de contrainte (stress test) est exécuté directement sur l'instance pour pousser la charge CPU à 100 % et observer la détection automatique de cette anomalie [4].
+Cette commande s’exécute pendant 400 secondes, charge la CPU à 100 %, puis réduit la charge jusqu’à 0 % à l’issue de la durée allouée.
+
+Naviguez vers la page de la console Vocareum, et cliquez sur le bouton AWS Details (Détails AWS).
+
+Copiez-collez l’URL située en regard de EC2InstanceURL dans un autre onglet du navigateur pour ouvrir une deuxième session de l’instance Stress Test (Test de contrainte).
+
+Dans la nouvelle session de terminal, exécutez la commande suivante :
+
+Bash
+top
+Cette commande affiche l’utilisation de la CPU en direct.
+
+Retournez sur la console AWS où est déjà ouverte la page Alarms (Alarmes) de CloudWatch.
+
+Choisissez LabCPUUtilizationAlarm.
+
+Surveillez le graphique en même temps que vous cliquez sur le bouton refresh (actualiser) toutes les minutes jusqu’à ce que le statut de l’alarme devienne In alarm (En état d’alarme).
+
+Le changement de statut In alarm (En état d’alarme) et l’envoi d’un e-mail ne prennent que quelques minutes.
+
+Sur le graphique, vous noterez que la valeur CPUUtilization a augmenté et dépasse le seuil de 60 %.
+
+Ouvrez votre boîte aux lettres électronique correspondant à l’adresse e-mail utilisée pour configurer l’abonnement Amazon SNS. Vous devriez avoir reçu un nouvel e-mail de notification du service AWS Notifications (Notifications AWS).
+
+Résumé de la tâche 3
+Au cours de cette tâche, vous avez exécuté une commande pour augmenter la charge de la CPU de l’instance EC2 à 100 % pendant 400 secondes. Cette augmentation de l’utilisation de la CPU a activé l’alarme dont l’état est passé à In alarm (En état d'alarme), et vous avez confirmé le pic de charge de la CPU sur le graphique CloudWatch. Vous avez également reçu une notification par e-mail pour vous avertir du changement de statut In alarm (En état d'alarme).
+
+Tâche 4 : Création d'un tableau de bord CloudWatch
+Au cours de cette tâche, vous allez créer un tableau de bord CloudWatch à l’aide des mêmes métriques CPUUtilization utilisées précédemment dans l’atelier.
+
+Les tableaux de bord CloudWatch sont des pages d'accueil personnalisables via la console CloudWatch que vous pouvez utiliser pour surveiller vos ressources dans une même vue. Avec les tableaux de bord CloudWatch, vous pouvez même surveiller les ressources réparties entre différentes régions. Vous pouvez utiliser les tableaux de bord CloudWatch pour créer des vues personnalisées des métriques et des alarmes de vos ressources AWS.
+
+Naviguez jusqu’à la section CloudWatch de la console AWS. Dans le volet de navigation de gauche, sélectionnez Dashboards (Tableaux de bord).
+
+Cliquez sur Create dashboard (Créer un tableau de bord).
+
+Sous Dashboard name (Nom du tableau de bord), saisissez LabEC2Dashboard, puis sélectionnez Create dashboard (Créer un tableau de bord).
+
+Choisissez Line (Ligne).
+
+Choisissez Metrics (Métriques).
+
+Sélectionnez EC2, puis choisissez Per-Instance Metrics (Métriques par instance).
+
+Cochez la case correspondant à Stress Test (Test de contrainte) pour Instance name (Nom de l’instance) et CPUUtilization pour Metric name (Nom de métrique).
+
+Sélectionnez Create a widget (Créer un widget).
+
+Cliquez sur Save dashboard (Enregistrer le tableau de bord).
+
+Vous venez de créer un raccourci pour accéder rapidement à l’affichage de la métrique CPUUtilization de l’instance Stress Test (Test de contrainte).
+
+Récapitulatif de l'atelier
+Au cours de cet atelier, vous avez créé une alarme CloudWatch qui a été activée lorsque l’utilisation de la CPU par l’instance Stress Test (Test de contrainte) a dépassé un seuil donné. Vous avez créé un abonnement à l’aide du service Amazon SNS qui vous a envoyé un e-mail lorsque l’alarme s’est déclenchée. Vous vous êtes connecté à l’instance EC2 pour exécuter un test de contrainte afin de pousser l’utilisation de la CPU de l’instance EC2 jusqu’à 100 %.
+
+Ce test a simulé ce qui pourrait se passer si un acte malveillant devait prendre le contrôle d’une instance EC2 et créer un pic de la CPU. L’augmentation de la charge CPU a plusieurs causes possibles, dont la présence d’un logiciel malveillant.
+
+Conclusion
+Félicitations ! Vous avez réussi à :
+
+Créer une notification Amazon SNS
+
+Configurer une alarme CloudWatch
+
+Soumettre une instance EC2 à un test de contrainte
+
+Confirmer qu’un e-mail Amazon SNS a été envoyé
+
+Créer un tableau de bord CloudWatch
+"""
+
+output_path = "surveillance_instance_ec2.md"
+with open(output_path, "w", encoding="utf-8") as f:
+f.write(md_content)
+
+print(f"File created successfully: {output_path}")
+
+
+```text?code_stdout&code_event_index=1
+File created successfully: surveillance_instance_ec2.md
+
+Votre fichier Markdown (.md) est prêt pour votre dépôt GitHub !  
+DOCX
+
+Icône MD
+surveillance_instance_ec2
+ MD 
+Ouvert
+Voici également le code brut en format Markdown exact que vous pouvez copier directement :
+
+Markdown
+# Surveillance d’une instance EC2
+
+## Présentation de l'atelier
+La journalisation et la surveillance sont deux techniques mises en place pour atteindre un objectif commun. Ensemble, elles garantissent les performances optimales d’un système et un cadre de sécurité. 
+
+La journalisation désigne l’enregistrement et le stockage d’événements de données sous la forme de fichiers journaux. Les journaux contiennent des détails de faible niveau qui offrent une visibilité sur les performances de votre système ou de vos applications dans certaines circonstances. Sur le plan de la sécurité, la journalisation permet aux administrateurs de sécurité d’identifier des signaux d’alerte qui peuvent passer inaperçus sur leur système.
+
+La surveillance désigne le processus d’analyse et de collecte de données qui permet de garantir des performances optimales. La surveillance permet de détecter les accès non autorisés et d’aligner l’utilisation de vos services avec la cadre de sécurité de votre organisation.
+
+Au cours de cet atelier, vous allez créer une alarme Amazon CloudWatch qui se déclenche lorsque l’instance Amazon Elastic Compute Cloud (Amazon EC2) dépasse un certain seuil d’utilisation de la CPU (Central Processing Unit). Vous créerez un abonnement à l’aide du service Amazon Simple Notification Service (Amazon SNS) qui permet de vous envoyer un e-mail quand l’alarme se déclenche. Vous vous connecterez à l’instance EC2 pour exécuter un test de contrainte afin de pousser l’utilisation de la CPU de l’instance EC2 jusqu’à 100 %.
+
+Ce test vise à simuler un acte de malveillance afin de prendre le contrôle de l’instance EC2 et créer un pic de la CPU. L’augmentation de la charge CPU a plusieurs causes possibles, dont la présence d’un logiciel malveillant.
+
+### Objectifs
+À la fin de cet atelier, vous serez en mesure d'effectuer les opérations suivantes :
+- Créer une notification Amazon SNS
+- Créer une alarme CloudWatch
+- Soumettre une instance EC2 à un test de contrainte
+- Confirmer qu’un e-mail Amazon SNS a été envoyé
+- Créer un tableau de bord CloudWatch
+
+### Durée
+Cet atelier dure environ 60 minutes.
+
+### Environnement de l'atelier
+L’environnement d’atelier comprend une instance EC2 reconfigurée appelée **Stress Test** (Test de contrainte) associée à un rôle IAM (Identity and Access Management) AWS utilisé pour se connecter via le gestionnaire de session d’AWS Systems Manager.
+
+Tous les composants backend, comme Amazon EC2, les rôles IAM et certains services AWS, ont déjà été intégrés à l’atelier. 
+
+### Accès à AWS Management Console
+1. En haut à droite de ces instructions, choisissez **Démarrer l’atelier**. 
+   * **Conseil de dépannage :** Si vous recevez le message d’erreur *Access Denied (Accès refusé)*, fermez la fenêtre d’erreur, et choisissez de nouveau **Démarrer l’atelier**.
+2. Les informations suivantes décrivent les différents états de l’atelier : 
+   * Un cercle rouge à côté d'AWS dans le coin supérieur gauche de cette page indique que l'atelier n'a pas démarré.
+   * Un cercle jaune à côté d'AWS dans le coin supérieur gauche de cette page indique que l'atelier est en cours de démarrage.
+   * Un cercle vert à côté d'AWS dans le coin supérieur gauche de cette page indique que l'atelier est prêt.
+3. Attendez que l’atelier soit prêt avant de continuer.
+4. En haut de ces instructions, choisissez le cercle vert en regard d'AWS. 
+   * Cette option permet d’accéder à AWS Management Console dans un nouvel onglet du navigateur. Le système s’y connecte automatiquement.
+   * **Conseil :** Si le nouvel onglet ne s'affiche pas, une bannière ou une icône située en haut du navigateur peut indiquer que votre navigateur bloque l'ouverture des fenêtres contextuelles. Cliquez sur la bannière ou l'icône, puis sélectionnez **Allow pop-ups (Autoriser les fenêtres contextuelles)**.
+5. Si un message vous invite à basculer vers la nouvelle page d’accueil de la console, choisissez **Switch to the new Console Home (Basculer vers la nouvelle page d’accueil de la console)**.
+6. Placez l'onglet AWS Management Console et ces instructions côte à côte. L’idéal est de pouvoir afficher les deux onglets du navigateur en même temps pour suivre plus facilement les étapes de l'atelier.
+7. Ne modifiez pas la région de l'atelier, sauf si vous y êtes invité.
 
 ---
 
-#### 🎯 Objectifs
-À l'issue de cet atelier, les objectifs techniques suivants ont été atteints et validés [5] :
-* **Créer et configurer une rubrique de notification Amazon SNS** avec un abonnement e-mail opérationnel [5].
-* **Créer et paramétrer une alarme CloudWatch** basée sur la métrique d'utilisation de la CPU d'une instance EC2 [5].
-* **Soumettre l'instance Amazon EC2 à un test de contrainte** (stress test) pour simuler une surcharge [5].
-* **Confirmer la détection et la notification de l'alerte** via la réception d'un e-mail d'alerte Amazon SNS [5].
-* **Créer un tableau de bord d'observabilité centralisé CloudWatch** pour suivre les métriques d'utilisation en temps réel [5].
+## Tâche 1 : Configuration d'Amazon SNS
+Au cours de cette tâche, vous allez créer une rubrique SNS et vous vous y abonnerez avec une adresse e-mail.
+
+Amazon SNS est un service de messagerie entièrement géré destiné aux communications A2A (Application-to-Application) et A2P (Application-to-Person).
+
+1. Dans **AWS Management Console**, saisissez `SNS` dans la barre de recherche, puis sélectionnez **Simple Notification Service (Service de notification simple)**.
+2. Sur la gauche, cliquez sur le bouton, sélectionnez **Topics (Rubriques)**, puis choisissez **Create topic (Créer une rubrique)**.
+3. Sur la page **Create topic (Créer une rubrique)**, dans la section **Details (Détails)**, configurez les options suivantes :
+   * **Type :** choisissez **Standard**.
+   * **Name (Nom) :** saisissez `MyCwAlarm`. 
+4. Sélectionnez **Create topic (Créer une rubrique)**.
+5. Sur la page de détails **MyCwAlarm**, cliquez sur l’onglet **Subscriptions (Abonnements)**, puis choisissez **Create subscription (Créer un abonnement)**.
+6. Sur la page **Create subscription (Créer un abonnement)**, dans la section **Details (Détails)**, configurez les options suivantes :
+   * **Topic ARN (ARN de la rubrique) :** Conservez l’option sélectionnée par défaut.
+   * **Protocol (Protocole) :** Dans la liste déroulante, choisissez **Email**.
+   * **Endpoint (Point de terminaison) :** saisissez une adresse e-mail valide à laquelle vous avez accès.
+7. Sélectionnez **Create subscription (Créer un abonnement)**. 
+8. Dans la section **Details (Détails)**, l’option **Status (Statut)** doit indiquer **Pending confirmation (En attente de confirmation)**. Vous devriez avoir reçu par e-mail le message *AWS Notification - Subscription Confirmation (Notification AWS - Confirmation de l’abonnement)* à l’adresse que vous avez spécifiée à l’étape précédente.
+9. Ouvrez l’e-mail que vous avez reçu avec la notification d’abonnement Amazon SNS, et cliquez sur **Confirm subscription (Confirmer l’abonnement)**.
+10. Retournez dans AWS Management Console. Dans le volet de navigation de gauche, choisissez **Subscriptions (Abonnements)**.
+11. L’option **Status (Statut)** doit indiquer à présent **Confirmed (Confirmé)**.
+
+### Résumé de la tâche 1
+Au cours de cette tâche, vous avez créé une rubrique SNS et un abonnement à cette rubrique à l’aide d’une adresse e-mail. Avec cette rubrique, des alertes peuvent maintenant être envoyées à l’adresse e-mail associée à l’abonnement Amazon SNS.
 
 ---
 
-#### 🏢 Scénario
-Ce cas d'usage simule une réponse à un acte de malveillance ou à un compromis de sécurité [5]. Un attaquant parvenant à prendre le contrôle d'une instance EC2 peut l'exploiter pour exécuter du code malveillant, miner de la cryptomonnaie ou mener des attaques par déni de service, ce qui engendre un pic d'utilisation anormal du processeur (CPU) [5]. 
+## Tâche 2 : Création d'une alarme CloudWatch
+Au cours de cette tâche, vous allez examiner certaines métriques et journaux stockés dans CloudWatch. Ensuite, vous créerez une alarme CloudWatch pour déclencher l’envoi d’un e-mail à la rubrique SNS dès que l’utilisation de la CPU de l’instance EC2 **Stress Test (Test de contrainte)** dépasse 60 %. 
 
-Afin de protéger l'infrastructure et de minimiser le temps de détection d'une telle menace, il est nécessaire d'établir une surveillance continue [4]. Dès qu'un comportement suspect est identifié (traduit ici par une surcharge CPU persistante), l'administrateur de sécurité doit être immédiatement alerté afin d'initier les mesures de remédiation appropriées [6, 7].
+CloudWatch est un service de surveillance et d'observabilité conçu pour les ingénieurs DevOps, les développeurs, les ingénieurs chargés de la fiabilité du site (SRE), les responsables informatiques et les chefs de produits. CloudWatch fournit les données et les informations exploitables dont vous avez besoin pour surveiller vos applications, réagir aux variations de performance sur l'ensemble du système et optimiser l'utilisation des ressources. CloudWatch collecte des données de surveillance et opérationnelles sous la forme de journaux, de métriques et d'événements. Vous disposez d’une vue complète de l’état opérationnel et d’une visibilité totale de vos ressources, applications et services AWS dans le cloud AWS et sur site.
+
+1. Dans **AWS Management Console**, saisissez `CloudWatch` dans la barre de recherche, puis sélectionnez-le.
+2. Dans le volet de navigation de gauche, cliquez dans la liste déroulante **Metrics (Métriques)**, puis choisissez **All metrics (Toutes les métriques)**.
+   * En règle générale, à l’issue d’un délai de 5 à 10 minutes suivant la création d’une instance EC2, CloudWatch récupère les détails des métriques.
+3. Sur la page **Metrics (Métriques)**, choisissez **EC2**, puis sélectionnez **Per-Instance Metrics (Métriques par instance)**.
+   * Sur cette page, vous pouvez afficher toutes les métriques consignées et l’instance EC2 associée à ces métriques.
+4. Cochez la case **CPUUtilization** de l’option **Metric name (Nom de métrique)** associée à l’instance EC2 **Stress Test (Test de contrainte)**.
+   * Cette option affiche le graphique de la métrique d’utilisation de la CPU, qui doit normalement se rapprocher de 0 puisque rien n’a encore été fait.
+5. Dans le volet de navigation de gauche, cliquez dans la liste déroulante **Alarms (Alarmes)**, puis choisissez **All alarms (Toutes les alarmes)**.
+   * Vous allez créer une alarme de métrique. Une alarme de métrique surveille une seule métrique CloudWatch ou le résultat d'une expression mathématique basée sur des métriques CloudWatch. L'alarme effectue une ou plusieurs actions en fonction de la valeur de la métrique ou de l'expression par rapport à un seuil sur un certain nombre de périodes. L’action envoie alors une notification à la rubrique SNS que vous avez créée précédemment.
+6. Sélectionnez **Create alarm (Créer une alarme)**.
+7. Choisissez successivement **Select metric (Sélectionner une métrique)**, **EC2** et **Per-Instance Metrics (Métriques par instance)**.
+8. Cochez la case **CPUUtilization** de l’option **Metric name (Nom de métrique)** associée au nom de l’instance **Stress Test (Test de contrainte)**.
+9. Choisissez **Select metric (Sélectionner une métrique)**.
+10. Sur la page **Specify metric and conditions (Spécifier les métriques et les conditions)**, configurez les options suivantes :
+    * **Métrique**
+      * **Metric name (Nom de métrique) :** Saisissez `CPUUtilization`
+      * **InstanceId :** Conservez l’option sélectionnée par défaut.
+      * **Statistic (Statistique) :** Saisissez `Average`
+      * **Period (Période) :** Dans la liste déroulante, choisissez `1 minute`.
+    * **Conditions**
+      * **Threshold type (Type de seuil) :** Choisissez **Static (Statique)**.
+      * **Whenever CPUUtilization is... (Lorsque l'utilisation de la CPU est...) :** Choisissez **Greater > threshold (Supérieure au seuil)**.
+      * **than... (à...) Define the threshold value (définir la valeur du seuil) :** Saisissez `60`
+11. Cliquez sur **Next (Suivant)**.
+12. Sur la page **Configure actions (Configurer les actions)**, configurez les options suivantes :
+    * **Notification**
+      * **Alarm state trigger (Déclenchement de l'état d'alarme) :** Choisissez **In alarm (En état d'alarme)**.
+      * **Select an SNS topic (Sélectionner une rubrique SNS) :** Choisissez **Select an existing SNS topic (Sélectionner une rubrique SNS existante)**.
+      * **Send a notification to... (Envoyer une notification à...) :** Dans la zone de texte, choisissez `MyCwAlarm`.
+13. Cliquez sur **Next (Suivant)**, puis configurez les options suivantes :
+    * **Nom et description**
+      * **Alarm name (Nom de l’alarme) :** Saisissez `LabCPUUtilizationAlarm`
+      * **Alarm description - optional (Description de l’alarme – facultatif) :** Saisissez `CloudWatch alarm for Stress Test EC2 instance CPUUtilization`
+14. Cliquez sur **Next (Suivant)**.
+15. Lisez la page **Preview and create (Prévisualiser et créer)**, puis choisissez **Create alarm (Créer une alarme)**.
+
+### Résumé de la tâche 2
+Au cours de cette tâche, vous avez affiché certaines métriques Amazon EC2 dans CloudWatch. Vous avez ensuite créé une alarme CloudWatch qui déclenche un état **In alarm (En état d'alarme)** lorsque l’utilisation de la CPU dépasse 60 %. 
 
 ---
 
-#### 🔍 Périmètre du Lab
-L'environnement de cet atelier s'appuie sur les composants suivants [8] :
-* **Instance EC2 ("Stress Test")** : Instance virtuelle Linux préconfigurée sur laquelle la charge sera simulée [8].
-* **Rôle IAM (Identity and Access Management)** : Profil d'instance attaché fournissant les autorisations nécessaires pour une connexion via le gestionnaire de session d'AWS Systems Manager [8].
-* **AWS Systems Manager Session Manager** : Service utilisé pour se connecter à distance et de manière sécurisée au terminal de l'instance sans requérir de clés SSH privées ou d'ouverture de port réseau public [8].
-* **Composants d'infrastructure AWS** : Services d'infrastructure de base déjà intégrés dans l'atelier pour supporter les services de supervision [8].
+## Tâche 3 : Test de l'alarme CloudWatch
+Au cours de cette tâche, vous allez vous connecter à l’instance EC2 **Stress Test (Test de contrainte)** et exécuter une commande qui teste la charge de la CPU à 100 %. Cette augmentation de l’utilisation de la CPU active l’alarme CloudWatch qui déclenche l’envoi par e-mail d’une notification Amazon SNS à l’adresse e-mail associée à la rubrique SNS.
+
+1. Naviguez vers la page de la console Vocareum, et cliquez sur le bouton **AWS Details (Détails AWS)**.
+2. En regard de **EC2InstanceURL** figure un lien. Copiez-le et collez-le dans un nouvel onglet du navigateur.
+   * Ce lien permet de se connecter à l’instance EC2 **Stress Test (Test de contrainte)**. 
+3. Pour augmenter manuellement la charge de la CPU de l’instance EC2, exécutez la commande suivante :
+   ```bash
+   sudo stress --cpu 10 -v --timeout 400s
+Cette commande s’exécute pendant 400 secondes, charge la CPU à 100 %, puis réduit la charge jusqu’à 0 % à l’issue de la durée allouée.
+
+Naviguez vers la page de la console Vocareum, et cliquez sur le bouton AWS Details (Détails AWS).
+
+Copiez-collez l’URL située en regard de EC2InstanceURL dans un autre onglet du navigateur pour ouvrir une deuxième session de l’instance Stress Test (Test de contrainte).
+
+Dans la nouvelle session de terminal, exécutez la commande suivante :
+
+Bash
+top
+Cette commande affiche l’utilisation de la CPU en direct.
+
+Retournez sur la console AWS où est déjà ouverte la page Alarms (Alarmes) de CloudWatch.
+
+Choisissez LabCPUUtilizationAlarm.
+
+Surveillez le graphique en même temps que vous cliquez sur le bouton refresh (actualiser) toutes les minutes jusqu’à ce que le statut de l’alarme devienne In alarm (En état d’alarme).
+
+Le changement de statut In alarm (En état d’alarme) et l’envoi d’un e-mail ne prennent que quelques minutes.
+
+Sur le graphique, vous noterez que la valeur CPUUtilization a augmenté et dépasse le seuil de 60 %.
+
+Ouvrez votre boîte aux lettres électronique correspondant à l’adresse e-mail utilisée pour configurer l’abonnement Amazon SNS. Vous devriez avoir reçu un nouvel e-mail de notification du service AWS Notifications (Notifications AWS).
+
+Résumé de la tâche 3
+Au cours de cette tâche, vous avez exécuté une commande pour augmenter la charge de la CPU de l’instance EC2 à 100 % pendant 400 secondes. Cette augmentation de l’utilisation de la CPU a activé l’alarme dont l’état est passé à In alarm (En état d'alarme), et vous avez confirmé le pic de charge de la CPU sur le graphique CloudWatch. Vous avez également reçu une notification par e-mail pour vous avertir du changement de statut In alarm (En état d'alarme).
+
+Tâche 4 : Création d'un tableau de bord CloudWatch
+Au cours de cette tâche, vous allez créer un tableau de bord CloudWatch à l’aide des mêmes métriques CPUUtilization utilisées précédemment dans l’atelier.
+
+Les tableaux de bord CloudWatch sont des pages d'accueil personnalisables via la console CloudWatch que vous pouvez utiliser pour surveiller vos ressources dans une même vue. Avec les tableaux de bord CloudWatch, vous pouvez même surveiller les ressources réparties entre différentes régions. Vous pouvez utiliser les tableaux de bord CloudWatch pour créer des vues personnalisées des métriques et des alarmes de vos ressources AWS.
+
+Naviguez jusqu’à la section CloudWatch de la console AWS. Dans le volet de navigation de gauche, sélectionnez Dashboards (Tableaux de bord).
+
+Cliquez sur Create dashboard (Créer un tableau de bord).
+
+Sous Dashboard name (Nom du tableau de bord), saisissez LabEC2Dashboard, puis sélectionnez Create dashboard (Créer un tableau de bord).
+
+Choisissez Line (Ligne).
+
+Choisissez Metrics (Métriques).
+
+Sélectionnez EC2, puis choisissez Per-Instance Metrics (Métriques par instance).
+
+Cochez la case correspondant à Stress Test (Test de contrainte) pour Instance name (Nom de l’instance) et CPUUtilization pour Metric name (Nom de métrique).
+
+Sélectionnez Create a widget (Créer un widget).
+
+Cliquez sur Save dashboard (Enregistrer le tableau de bord).
+
+Vous venez de créer un raccourci pour accéder rapidement à l’affichage de la métrique CPUUtilization de l’instance Stress Test (Test de contrainte).
+
+Récapitulatif de l'atelier
+Au cours de cet atelier, vous avez créé une alarme CloudWatch qui a été activée lorsque l’utilisation de la CPU par l’instance Stress Test (Test de contrainte) a dépassé un seuil donné. Vous avez créé un abonnement à l’aide du service Amazon SNS qui vous a envoyé un e-mail lorsque l’alarme s’est déclenchée. Vous vous êtes connecté à l’instance EC2 pour exécuter un test de contrainte afin de pousser l’utilisation de la CPU de l’instance EC2 jusqu’à 100 %.
+
+Ce test a simulé ce qui pourrait se passer si un acte malveillant devait prendre le contrôle d’une instance EC2 et créer un pic de la CPU. L’augmentation de la charge CPU a plusieurs causes possibles, dont la présence d’un logiciel malveillant.
+
+Conclusion
+Félicitations ! Vous avez réussi à :
+
+Créer une notification Amazon SNS
+
+Configurer une alarme CloudWatch
+
+Soumettre une instance EC2 à un test de contrainte
+
+Confirmer qu’un e-mail Amazon SNS a été envoyé
+
+Créer un tableau de bord CloudWatch
+
+
+
+
+Gemini est une IA et peut se tromper.
+
+Analyse…
+# Surveillance d’une instance EC2
+
+## Présentation de l'atelier
+La journalisation et la surveillance sont deux techniques mises en place pour atteindre un objectif commun. Ensemble, elles garantissent les performances optimales d’un système et un cadre de sécurité. 
+
+La journalisation désigne l’enregistrement et le stockage d’événements de données sous la forme de fichiers journaux. Les journaux contiennent des détails de faible niveau qui offrent une visibilité sur les performances de votre système ou de vos applications dans certaines circonstances. Sur le plan de la sécurité, la journalisation permet aux administrateurs de sécurité d’identifier des signaux d’alerte qui peuvent passer inaperçus sur leur système.
+
+La surveillance désigne le processus d’analyse et de collecte de données qui permet de garantir des performances optimales. La surveillance permet de détecter les accès non autorisés et d’aligner l’utilisation de vos services avec la cadre de sécurité de votre organisation.
+
+Au cours de cet atelier, vous allez créer une alarme Amazon CloudWatch qui se déclenche lorsque l’instance Amazon Elastic Compute Cloud (Amazon EC2) dépasse un certain seuil d’utilisation de la CPU (Central Processing Unit). Vous créerez un abonnement à l’aide du service Amazon Simple Notification Service (Amazon SNS) qui permet de vous envoyer un e-mail quand l’alarme se déclenche. Vous vous connecterez à l’instance EC2 pour exécuter un test de contrainte afin de pousser l’utilisation de la CPU de l’instance EC2 jusqu’à 100 %.
+
+Ce test vise à simuler un acte de malveillance afin de prendre le contrôle de l’instance EC2 et créer un pic de la CPU. L’augmentation de la charge CPU a plusieurs causes possibles, dont la présence d’un logiciel malveillant.
+
+### Objectifs
+À la fin de cet atelier, vous serez en mesure d'effectuer les opérations suivantes :
+- Créer une notification Amazon SNS
+- Créer une alarme CloudWatch
+- Soumettre une instance EC2 à un test de contrainte
+- Confirmer qu’un e-mail Amazon SNS a été envoyé
+- Créer un tableau de bord CloudWatch
+
+### Durée
+Cet atelier dure environ 60 minutes.
+
+### Environnement de l'atelier
+L’environnement d’atelier comprend une instance EC2 reconfigurée appelée **Stress Test** (Test de contrainte) associée à un rôle IAM (Identity and Access Management) AWS utilisé pour se connecter via le gestionnaire de session d’AWS Systems Manager.
+
+Tous les composants backend, comme Amazon EC2, les rôles IAM et certains services AWS, ont déjà été intégrés à l’atelier. 
+
+### Accès à AWS Management Console
+1. En haut à droite de ces instructions, choisissez **Démarrer l’atelier**. 
+   * **Conseil de dépannage :** Si vous recevez le message d’erreur *Access Denied (Accès refusé)*, fermez la fenêtre d’erreur, et choisissez de nouveau **Démarrer l’atelier**.
+2. Les informations suivantes décrivent les différents états de l’atelier : 
+   * Un cercle rouge à côté d'AWS dans le coin supérieur gauche de cette page indique que l'atelier n'a pas démarré.
+   * Un cercle jaune à côté d'AWS dans le coin supérieur gauche de cette page indique que l'atelier est en cours de démarrage.
+   * Un cercle vert à côté d'AWS dans le coin supérieur gauche de cette page indique que l'atelier est prêt.
+3. Attendez que l’atelier soit prêt avant de continuer.
+4. En haut de ces instructions, choisissez le cercle vert en regard d'AWS. 
+   * Cette option permet d’accéder à AWS Management Console dans un nouvel onglet du navigateur. Le système s’y connecte automatiquement.
+   * **Conseil :** Si le nouvel onglet ne s'affiche pas, une bannière ou une icône située en haut du navigateur peut indiquer que votre navigateur bloque l'ouverture des fenêtres contextuelles. Cliquez sur la bannière ou l'icône, puis sélectionnez **Allow pop-ups (Autoriser les fenêtres contextuelles)**.
+5. Si un message vous invite à basculer vers la nouvelle page d’accueil de la console, choisissez **Switch to the new Console Home (Basculer vers la nouvelle page d’accueil de la console)**.
+6. Placez l'onglet AWS Management Console et ces instructions côte à côte. L’idéal est de pouvoir afficher les deux onglets du navigateur en même temps pour suivre plus facilement les étapes de l'atelier.
+7. Ne modifiez pas la région de l'atelier, sauf si vous y êtes invité.
 
 ---
 
-#### 🛠️ Technologies et outils utilisés
+## Tâche 1 : Configuration d'Amazon SNS
+Au cours de cette tâche, vous allez créer une rubrique SNS et vous vous y abonnerez avec une adresse e-mail.
 
-| Technologie / Service | Utilisation |
-| :--- | :--- |
-| **AWS IAM** | Gestion des accès et des rôles sécurisés pour connecter l'instance EC2 via Systems Manager sans clé d'accès statique [8]. |
-| **Amazon EC2** | Instance virtuelle Linux ("Stress Test") faisant l'objet de la surveillance et soumise à la simulation d'incident [6, 8]. |
-| **Amazon CloudWatch** | Collecte des métriques d'infrastructure (CPUUtilization), hébergement des alarmes de seuil et création de tableaux de bord personnalisés [6, 9, 10]. |
-| **Amazon SNS (Simple Notification Service)** | Service de messagerie entièrement géré utilisé pour diffuser les alertes de sécurité par courrier électronique (modèle de publication/abonnement) [6, 11]. |
-| **AWS Systems Manager (Session Manager)** | Outil d'administration pour ouvrir une session terminal sécurisée et chiffrée sur l'instance EC2 [8]. |
-| **stress (Utilitaire Linux)** | Outil d'injection de charge CPU pour pousser l'utilisation du processeur de l'instance à 100 % pendant une durée définie [12]. |
+Amazon SNS est un service de messagerie entièrement géré destiné aux communications A2A (Application-to-Application) et A2P (Application-to-Person).
+
+1. Dans **AWS Management Console**, saisissez `SNS` dans la barre de recherche, puis sélectionnez **Simple Notification Service (Service de notification simple)**.
+2. Sur la gauche, cliquez sur le bouton, sélectionnez **Topics (Rubriques)**, puis choisissez **Create topic (Créer une rubrique)**.
+3. Sur la page **Create topic (Créer une rubrique)**, dans la section **Details (Détails)**, configurez les options suivantes :
+   * **Type :** choisissez **Standard**.
+   * **Name (Nom) :** saisissez `MyCwAlarm`. 
+4. Sélectionnez **Create topic (Créer une rubrique)**.
+5. Sur la page de détails **MyCwAlarm**, cliquez sur l’onglet **Subscriptions (Abonnements)**, puis choisissez **Create subscription (Créer un abonnement)**.
+6. Sur la page **Create subscription (Créer un abonnement)**, dans la section **Details (Détails)**, configurez les options suivantes :
+   * **Topic ARN (ARN de la rubrique) :** Conservez l’option sélectionnée par défaut.
+   * **Protocol (Protocole) :** Dans la liste déroulante, choisissez **Email**.
+   * **Endpoint (Point de terminaison) :** saisissez une adresse e-mail valide à laquelle vous avez accès.
+7. Sélectionnez **Create subscription (Créer un abonnement)**. 
+8. Dans la section **Details (Détails)**, l’option **Status (Statut)** doit indiquer **Pending confirmation (En attente de confirmation)**. Vous devriez avoir reçu par e-mail le message *AWS Notification - Subscription Confirmation (Notification AWS - Confirmation de l’abonnement)* à l’adresse que vous avez spécifiée à l’étape précédente.
+9. Ouvrez l’e-mail que vous avez reçu avec la notification d’abonnement Amazon SNS, et cliquez sur **Confirm subscription (Confirmer l’abonnement)**.
+10. Retournez dans AWS Management Console. Dans le volet de navigation de gauche, choisissez **Subscriptions (Abonnements)**.
+11. L’option **Status (Statut)** doit indiquer à présent **Confirmed (Confirmé)**.
+
+### Résumé de la tâche 1
+Au cours de cette tâche, vous avez créé une rubrique SNS et un abonnement à cette rubrique à l’aide d’une adresse e-mail. Avec cette rubrique, des alertes peuvent maintenant être envoyées à l’adresse e-mail associée à l’abonnement Amazon SNS.
 
 ---
 
-#### 🧠 Concepts abordés
+## Tâche 2 : Création d'une alarme CloudWatch
+Au cours de cette tâche, vous allez examiner certaines métriques et journaux stockés dans CloudWatch. Ensuite, vous créerez une alarme CloudWatch pour déclencher l’envoi d’un e-mail à la rubrique SNS dès que l’utilisation de la CPU de l’instance EC2 **Stress Test (Test de contrainte)** dépasse 60 %. 
 
-* **Journalisation vs Surveillance** : 
-  * La *journalisation* est l'enregistrement et le stockage d'événements détaillés de bas niveau sous forme de fichiers journaux pour l'analyse a posteriori et la détection de signaux faibles de sécurité [3].
-  * La *surveillance* est un processus continu de collecte, de mesure et d'analyse opérationnelle de métriques en temps réel pour s'assurer des performances optimales et détecter les accès non autorisés [4].
-* **Alarme de métrique CloudWatch** : Dispositif de supervision évaluant une métrique spécifique par rapport à un seuil défini (statique ou dynamique) sur un nombre donné de périodes afin de déclencher des actions automatisées (notifications, redémarrages, etc.) [13].
-* **Modèle de notification asynchrone (Pub/Sub)** : Modèle de communication d'Amazon SNS dans lequel un éditeur envoie des messages à une rubrique ("Topic"), qui sont ensuite automatiquement poussés vers les points de terminaison ("Endpoints") des abonnés (e-mails, requêtes HTTP, fonctions Lambda) [11, 14, 15].
-* **Tableaux de bord d'observabilité** : Vues de synthèse personnalisables intégrant des widgets graphiques pour surveiller l'état de santé de multiples ressources réparties au sein d'une ou plusieurs régions AWS [10].
+CloudWatch est un service de surveillance et d'observabilité conçu pour les ingénieurs DevOps, les développeurs, les ingénieurs chargés de la fiabilité du site (SRE), les responsables informatiques et les chefs de produits. CloudWatch fournit les données et les informations exploitables dont vous avez besoin pour surveiller vos applications, réagir aux variations de performance sur l'ensemble du système et optimiser l'utilisation des ressources. CloudWatch collecte des données de surveillance et opérationnelles sous la forme de journaux, de métriques et d'événements. Vous disposez d’une vue complète de l’état opérationnel et d’une visibilité totale de vos ressources, applications et services AWS dans le cloud AWS et sur site.
+
+1. Dans **AWS Management Console**, saisissez `CloudWatch` dans la barre de recherche, puis sélectionnez-le.
+2. Dans le volet de navigation de gauche, cliquez dans la liste déroulante **Metrics (Métriques)**, puis choisissez **All metrics (Toutes les métriques)**.
+   * En règle générale, à l’issue d’un délai de 5 à 10 minutes suivant la création d’une instance EC2, CloudWatch récupère les détails des métriques.
+3. Sur la page **Metrics (Métriques)**, choisissez **EC2**, puis sélectionnez **Per-Instance Metrics (Métriques par instance)**.
+   * Sur cette page, vous pouvez afficher toutes les métriques consignées et l’instance EC2 associée à ces métriques.
+4. Cochez la case **CPUUtilization** de l’option **Metric name (Nom de métrique)** associée à l’instance EC2 **Stress Test (Test de contrainte)**.
+   * Cette option affiche le graphique de la métrique d’utilisation de la CPU, qui doit normalement se rapprocher de 0 puisque rien n’a encore été fait.
+5. Dans le volet de navigation de gauche, cliquez dans la liste déroulante **Alarms (Alarmes)**, puis choisissez **All alarms (Toutes les alarmes)**.
+   * Vous allez créer une alarme de métrique. Une alarme de métrique surveille une seule métrique CloudWatch ou le résultat d'une expression mathématique basée sur des métriques CloudWatch. L'alarme effectue une ou plusieurs actions en fonction de la valeur de la métrique ou de l'expression par rapport à un seuil sur un certain nombre de périodes. L’action envoie alors une notification à la rubrique SNS que vous avez créée précédemment.
+6. Sélectionnez **Create alarm (Créer une alarme)**.
+7. Choisissez successivement **Select metric (Sélectionner une métrique)**, **EC2** et **Per-Instance Metrics (Métriques par instance)**.
+8. Cochez la case **CPUUtilization** de l’option **Metric name (Nom de métrique)** associée au nom de l’instance **Stress Test (Test de contrainte)**.
+9. Choisissez **Select metric (Sélectionner une métrique)**.
+10. Sur la page **Specify metric and conditions (Spécifier les métriques et les conditions)**, configurez les options suivantes :
+    * **Métrique**
+      * **Metric name (Nom de métrique) :** Saisissez `CPUUtilization`
+      * **InstanceId :** Conservez l’option sélectionnée par défaut.
+      * **Statistic (Statistique) :** Saisissez `Average`
+      * **Period (Période) :** Dans la liste déroulante, choisissez `1 minute`.
+    * **Conditions**
+      * **Threshold type (Type de seuil) :** Choisissez **Static (Statique)**.
+      * **Whenever CPUUtilization is... (Lorsque l'utilisation de la CPU est...) :** Choisissez **Greater > threshold (Supérieure au seuil)**.
+      * **than... (à...) Define the threshold value (définir la valeur du seuil) :** Saisissez `60`
+11. Cliquez sur **Next (Suivant)**.
+12. Sur la page **Configure actions (Configurer les actions)**, configurez les options suivantes :
+    * **Notification**
+      * **Alarm state trigger (Déclenchement de l'état d'alarme) :** Choisissez **In alarm (En état d'alarme)**.
+      * **Select an SNS topic (Sélectionner une rubrique SNS) :** Choisissez **Select an existing SNS topic (Sélectionner une rubrique SNS existante)**.
+      * **Send a notification to... (Envoyer une notification à...) :** Dans la zone de texte, choisissez `MyCwAlarm`.
+13. Cliquez sur **Next (Suivant)**, puis configurez les options suivantes :
+    * **Nom et description**
+      * **Alarm name (Nom de l’alarme) :** Saisissez `LabCPUUtilizationAlarm`
+      * **Alarm description - optional (Description de l’alarme – facultatif) :** Saisissez `CloudWatch alarm for Stress Test EC2 instance CPUUtilization`
+14. Cliquez sur **Next (Suivant)**.
+15. Lisez la page **Preview and create (Prévisualiser et créer)**, puis choisissez **Create alarm (Créer une alarme)**.
+
+### Résumé de la tâche 2
+Au cours de cette tâche, vous avez affiché certaines métriques Amazon EC2 dans CloudWatch. Vous avez ensuite créé une alarme CloudWatch qui déclenche un état **In alarm (En état d'alarme)** lorsque l’utilisation de la CPU dépasse 60 %. 
 
 ---
 
-#### 🚀 Réalisation du Lab
+## Tâche 3 : Test de l'alarme CloudWatch
+Au cours de cette tâche, vous allez vous connecter à l’instance EC2 **Stress Test (Test de contrainte)** et exécuter une commande qui teste la charge de la CPU à 100 %. Cette augmentation de l’utilisation de la CPU active l’alarme CloudWatch qui déclenche l’envoi par e-mail d’une notification Amazon SNS à l’adresse e-mail associée à la rubrique SNS.
 
-##### Étape 1 — Configuration d'Amazon SNS
-Pour mettre en place le canal de notification, une rubrique de messagerie Amazon SNS nommée `MyCwAlarm` de type **Standard** a été créée [11, 14]. Un abonnement a ensuite été configuré pour cette rubrique en sélectionnant le protocole **Email** et en renseignant une adresse e-mail de destination comme point de terminaison [14, 15]. 
+1. Naviguez vers la page de la console Vocareum, et cliquez sur le bouton **AWS Details (Détails AWS)**.
+2. En regard de **EC2InstanceURL** figure un lien. Copiez-le et collez-le dans un nouvel onglet du navigateur.
+   * Ce lien permet de se connecter à l’instance EC2 **Stress Test (Test de contrainte)**. 
+3. Pour augmenter manuellement la charge de la CPU de l’instance EC2, exécutez la commande suivante :
+   ```bash
+   sudo stress --cpu 10 -v --timeout 400s
+   ```
+   * Cette commande s’exécute pendant 400 secondes, charge la CPU à 100 %, puis réduit la charge jusqu’à 0 % à l’issue de la durée allouée.
+4. Naviguez vers la page de la console Vocareum, et cliquez sur le bouton **AWS Details (Détails AWS)**.
+5. Copiez-collez l’URL située en regard de **EC2InstanceURL** dans un autre onglet du navigateur pour ouvrir une deuxième session de l’instance **Stress Test (Test de contrainte)**.
+6. Dans la nouvelle session de terminal, exécutez la commande suivante :
+   ```bash
+   top
+   ```
+   * Cette commande affiche l’utilisation de la CPU en direct.
+7. Retournez sur la console AWS où est déjà ouverte la page **Alarms (Alarmes)** de CloudWatch.
+8. Choisissez **LabCPUUtilizationAlarm**.
+9. Surveillez le graphique en même temps que vous cliquez sur le bouton **refresh (actualiser)** toutes les minutes jusqu’à ce que le statut de l’alarme devienne **In alarm (En état d’alarme)**.
+   * Le changement de statut **In alarm (En état d’alarme)** et l’envoi d’un e-mail ne prennent que quelques minutes.
+   * Sur le graphique, vous noterez que la valeur `CPUUtilization` a augmenté et dépasse le seuil de 60 %.
+10. Ouvrez votre boîte aux lettres électronique correspondant à l’adresse e-mail utilisée pour configurer l’abonnement Amazon SNS. Vous devriez avoir reçu un nouvel e-mail de notification du service **AWS Notifications (Notifications AWS)**.
 
-L'état initial de l'abonnement s'affiche sous le statut **Pending confirmation** (En attente de confirmation) [15]. Un e-mail de validation envoyé automatiquement par AWS a été réceptionné, et la validation via le lien **Confirm subscription** a permis de passer l'état à **Confirmed** (Confirmé) dans la console d'administration [6, 15].
+### Résumé de la tâche 3
+Au cours de cette tâche, vous avez exécuté une commande pour augmenter la charge de la CPU de l’instance EC2 à 100 % pendant 400 secondes. Cette augmentation de l’utilisation de la CPU a activé l’alarme dont l’état est passé à **In alarm (En état d'alarme)**, et vous avez confirmé le pic de charge de la CPU sur le graphique CloudWatch. Vous avez également reçu une notification par e-mail pour vous avertir du changement de statut **In alarm (En état d'alarme)**.
 
-![Abonnement SNS validé et confirmé](images/sns-subscription-confirmed.png)
+---
 
-##### Étape 2 — Création de l'alarme CloudWatch
-L'analyse initiale des métriques de performance de l'instance `Stress Test` a été menée dans CloudWatch sous les métriques par instance, ciblant l'utilisation du processeur (`CPUUtilization`) [13, 16, 17]. 
+## Tâche 4 : Création d'un tableau de bord CloudWatch
+Au cours de cette tâche, vous allez créer un tableau de bord CloudWatch à l’aide des mêmes métriques `CPUUtilization` utilisées précédemment dans l’atelier.
 
-Une alarme de métrique nommée `LabCPUUtilizationAlarm` a été créée avec les spécifications suivantes [17-19] :
-* **Métrique** : `CPUUtilization` pour l'instance `Stress Test` [17].
-* **Statistique** : Moyenne ("Average") [18].
-* **Période d'évaluation** : 1 minute [18].
-* **Condition de seuil** : Seuil statique supérieur à 60 % (déclenché dès que l'utilisation CPU dépasse 60) [18].
-* **Action** : Envoi d'une alerte à la rubrique existante `MyCwAlarm` lorsque l'alarme passe en état **In alarm** (En état d'alarme) [20].
+Les tableaux de bord CloudWatch sont des pages d'accueil personnalisables via la console CloudWatch que vous pouvez utiliser pour surveiller vos ressources dans une même vue. Avec les tableaux de bord CloudWatch, vous pouvez même surveiller les ressources réparties entre différentes régions. Vous pouvez utiliser les tableaux de bord CloudWatch pour créer des vues personnalisées des métriques et des alarmes de vos ressources AWS.
 
-![Configuration de l'alarme CloudWatch](images/cloudwatch-alarm-configuration.png)
+1. Naviguez jusqu’à la section **CloudWatch** de la console AWS. Dans le volet de navigation de gauche, sélectionnez **Dashboards (Tableaux de bord)**.
+2. Cliquez sur **Create dashboard (Créer un tableau de bord)**.
+3. Sous **Dashboard name (Nom du tableau de bord)**, saisissez `LabEC2Dashboard`, puis sélectionnez **Create dashboard (Créer un tableau de bord)**.
+4. Choisissez **Line (Ligne)**.
+5. Choisissez **Metrics (Métriques)**.
+6. Sélectionnez **EC2**, puis choisissez **Per-Instance Metrics (Métriques par instance)**.
+7. Cochez la case correspondant à **Stress Test (Test de contrainte)** pour **Instance name (Nom de l’instance)** et **CPUUtilization** pour **Metric name (Nom de métrique)**.
+8. Sélectionnez **Create a widget (Créer un widget)**.
+9. Cliquez sur **Save dashboard (Enregistrer le tableau de bord)**.
 
-##### Étape 3 — Test d'activité et déclenchement de l'alarme (Stress Test)
-La connexion au terminal de l'instance EC2 `Stress Test` a été établie de manière sécurisée en accédant au lien fourni par le gestionnaire de session d'AWS Systems Manager [12, 21].
+Vous venez de créer un raccourci pour accéder rapidement à l’affichage de la métrique `CPUUtilization` de l’instance **Stress Test (Test de contrainte)**.
 
-Pour simuler une surcharge applicative ou une intrusion malveillante, la commande suivante a été exécutée pour injecter 10 processus de contrainte pendant une durée de 400 secondes [12] :
-```bash
-sudo stress --cpu 10 -v --timeout 400s
-Une seconde session sur l'instance a été ouverte en parallèle pour exécuter l'utilitaire top, confirmant en temps réel que la charge CPU était poussée à 100 %
-.
-Dans la console CloudWatch, la métrique CPUUtilization a enregistré une augmentation rapide dépassant largement le seuil de 60 %
-. Après l'évaluation de la période, l'alarme est passée du statut OK à In alarm
-. Ce changement d'état a immédiatement provoqué l'envoi d'une alerte e-mail par le service SNS vers la boîte de réception configurée
-.
-Étape 4 — Création d'un tableau de bord CloudWatch
-Afin de centraliser la surveillance de cette infrastructure, un tableau de bord CloudWatch personnalisé nommé LabEC2Dashboard a été créé
-.
-Un widget graphique de type Ligne ("Line") a été configuré et ajouté à ce tableau de bord
-. Ce widget affiche de façon continue la métrique CPUUtilization de l'instance Stress Test, offrant un raccourci visuel instantané et permanent pour l'analyse opérationnelle
-.
-📸 Captures d’écran
-Cette section récapitule les preuves visuelles à intégrer pour valider la bonne exécution des tâches
- :
-sns-subscription-confirmed.png
-Description : Capture d'écran de l'onglet d'abonnements SNS montrant le statut configuré
-.
-Démonstration : Confirme que l'endpoint e-mail a été validé avec succès (statut "Confirmed") et est prêt à relayer les alertes
-.
-cloudwatch-alarm-configuration.png
-Description : Vue détaillée des conditions et des métriques sélectionnées dans CloudWatch
-.
-Démonstration : Prouve que l'alarme est correctement configurée pour évaluer des moyennes sur des périodes d'une minute avec un seuil de déclenchement fixé à 60 % de CPU
-.
-cloudwatch-cpu-stress-alarm.png
-Description : Graphique temporel de la métrique CPUUtilization dans CloudWatch au moment du stress test
-.
-Démonstration : Montre visuellement la courbe qui s'élève jusqu'à 100 % (dépassement du seuil rouge à 60 %) et le basculement officiel de l'état en rouge "In alarm"
-.
-sns-email-notification.png
-Description : Copie d'écran de la boîte de messagerie affichant le contenu de l'e-mail d'alerte reçu de la part d'AWS Notifications
-.
-Démonstration : Valide le fonctionnement de bout en bout de la chaîne d'alerte automatisée, de la détection de l'anomalie système à la notification humaine
-.
-cloudwatch-dashboard.png
-Description : Interface d'accueil du tableau de bord personnalisé LabEC2Dashboard
-.
-Démonstration : Montre l'intégration réussie du widget de type ligne pour le suivi visuel permanent des performances
-.
-🔐 Sécurité et conformité
-Sécurité des accès par Moindre Privilège : Le lab met en œuvre les bonnes pratiques de sécurité d'AWS IAM en rattachant à l'instance un rôle IAM de session
-. La connexion administrative s'effectue via Systems Manager Session Manager
-. Cela évite d'exposer publiquement le port SSH (22) de l'instance à Internet ou de manipuler des paires de clés d'accès statiques (.pem) qui pourraient être compromises ou égarées.
-Détection Proactive des Menaces : La surveillance continue au niveau de l'infrastructure permet d'identifier immédiatement les écarts de comportement (un pic CPU à 100 % consécutif à une activité anormale)
-. C'est une mesure essentielle de détection d'intrusions, de logiciels malveillants ou d'exécutions de scripts non autorisés (crypto-jacking)
-.
-Réduction du temps d'intervention (MTTD) : La configuration d'une période de surveillance courte (1 minute) et la transmission instantanée de l'état d'alarme par notification SNS permettent de réduire drastiquement le délai de détection des incidents de sécurité (Mean Time to Detect)
-.
-💡 Problèmes rencontrés et solutions
-Problème
-Cause
-Solution
-Accès refusé ("Access Denied") au démarrage du Lab
-Erreur d'initialisation temporaire de la session IAM ou de l'environnement AWS d'apprentissage
-.
-Fermer la fenêtre d'erreur active et cliquer à nouveau sur le bouton Démarrer l’atelier pour réinitialiser les droits
-.
-Console AWS bloquée lors de la tentative de redirection
-Paramètres de sécurité du navigateur web bloquant l'ouverture des fenêtres contextuelles (pop-ups)
-.
-Cliquer sur la bannière ou l'icône de restriction dans la barre d'adresse et sélectionner Allow pop-ups (Autoriser les fenêtres contextuelles)
-.
-Métriques EC2 absentes ou graphiques vides au début dans CloudWatch
-Délai d'agrégation d'AWS pour collecter et remonter les premières métriques de l'instance virtuelle (généralement 5 à 10 minutes)
-.
-Patienter entre 5 et 10 minutes après le démarrage effectif de l'instance pour que l'intégration des métriques soit visible dans CloudWatch
-.
-📊 Résultats
-L'ensemble des tests a permis d'obtenir une architecture de surveillance opérationnelle de bout en bout
-. Lors de l'injection de charge artificielle par l'utilitaire stress, la CPU de l'instance a été sollicitée à 100 % pendant une période de 400 secondes
-. CloudWatch a détecté ce dépassement du seuil de 60 % de CPU de manière automatique
-. L'état de l'alarme LabCPUUtilizationAlarm est passé au rouge ("In alarm") et a déclenché l'envoi en direct d'une alerte par e-mail via la rubrique SNS MyCwAlarm configurée
-. De plus, le tableau de bord personnalisé LabEC2Dashboard fournit désormais un outil d'observation pérenne et de haut niveau
-.
-🎓 Compétences acquises
-Observabilité & Supervision Cloud : Configuration et personnalisation de métriques, d'alarmes de seuil et de tableaux de bord opérationnels sous Amazon CloudWatch
-.
-Architecture d'Alerte Automatisée : Implémentation du service Amazon SNS (Simple Notification Service) avec des abonnements sécurisés selon le modèle Pub/Sub
-.
-SecOps & Détection Proactive : Mise en place de contrôles automatisés pour identifier des pics d'utilisation système caractéristiques d'attaques malveillantes ou d'infections virales
-.
-Administration système & Diagnostic Linux : Utilisation de commandes d'évaluation de charge (top) et de génération de stress (stress) pour valider la résilience et l'observabilité
-.
-Sécurité des Accès Cloud : Utilisation d'AWS Systems Manager (Session Manager) associé à des rôles IAM d'instance pour des sessions console sécurisées et sans clés SSH
-.
-📚 Ce que j’ai appris
-Cet atelier m'a permis de comprendre de façon concrète l'interaction entre les processus systèmes au sein d'une machine virtuelle Linux et les mécanismes de surveillance natifs de l'infrastructure cloud AWS
-. J'ai assimilé que la surveillance continue n'est pas uniquement un sujet de gestion de capacité opérationnelle, mais qu'elle constitue un dispositif de défense et d'alerte SecOps capital
-. La capacité à corréler une hausse de charge soudaine avec un système automatisé d'alerte par e-mail me dote de compétences précieuses pour concevoir des architectures cloud auto-supervisées et hautement réactives face aux anomalies et aux cybermenaces
-.
-✅ Conclusion
-En conclusion, ce projet valide l'implémentation réussie d'une boucle complète d'observabilité sur AWS, allant de la détection d'une anomalie système sur une instance EC2 au dispatch d'une alerte de sécurité
-. L'utilisation d'Amazon CloudWatch et d'Amazon SNS offre une visibilité totale et un temps d'alerte minimal, des atouts stratégiques pour garantir le maintien en conditions de sécurité et de performances des infrastructures cloud de production
-.
+---
 
-📊 Souhaitez-vous que je crée un tableau synthétique supplémentaire des métriques Clo
+## Récapitulatif de l'atelier
+Au cours de cet atelier, vous avez créé une alarme CloudWatch qui a été activée lorsque l’utilisation de la CPU par l’instance **Stress Test (Test de contrainte)** a dépassé un seuil donné. Vous avez créé un abonnement à l’aide du service Amazon SNS qui vous a envoyé un e-mail lorsque l’alarme s’est déclenchée. Vous vous êtes connecté à l’instance EC2 pour exécuter un test de contrainte afin de pousser l’utilisation de la CPU de l’instance EC2 jusqu’à 100 %.
+
+Ce test a simulé ce qui pourrait se passer si un acte malveillant devait prendre le contrôle d’une instance EC2 et créer un pic de la CPU. L’augmentation de la charge CPU a plusieurs causes possibles, dont la présence d’un logiciel malveillant.
+
+---
+
+## Conclusion
+Félicitations ! Vous avez réussi à :
+- Créer une notification Amazon SNS
+- Configurer une alarme CloudWatch
+- Soumettre une instance EC2 à un test de contrainte
+- Confirmer qu’un e-mail Amazon SNS a été envoyé
+- Créer un tableau de bord CloudWatch
+surveillance_instance_ec2.md
+Affichage de surveillance_instance_ec2.md.
