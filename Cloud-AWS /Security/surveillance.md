@@ -68,7 +68,7 @@ Au cours de cette tâche, vous allez créer une rubrique SNS et vous vous y abon
 
 ### Éapes d'exécution :
 1. Dans **AWS Management Console**, saisissez `SNS` dans la barre de recherche, puis sélectionnez **Simple Notification Service (Service de notification simple)**.
-![Configuration de la rubrique SNS]()
+![Configuration de la rubrique SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Images%20Lab/LAB/Capture%20d'%C3%A9cran%202026-06-10%20141330.png?raw=true)
 2. Sur la gauche, cliquez sur le bouton menu, sélectionnez **Topics (Rubriques)**, puis choisissez **Create topic (Créer une rubrique)**.
 3. Sur la page **Create topic (Créer une rubrique)**, dans la section **Details (Détails)**, configurez les options suivantes :
    * **Type :** choisissez `Standard`.
