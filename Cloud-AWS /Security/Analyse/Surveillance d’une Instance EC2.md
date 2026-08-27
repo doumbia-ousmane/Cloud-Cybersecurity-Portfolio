@@ -70,15 +70,19 @@ Au cours de cette tâche, vous allez créer une rubrique SNS et vous vous y abon
 1. Dans **AWS Management Console**, saisissez `SNS` dans la barre de recherche, puis sélectionnez **Simple Notification Service (Service de notification simple)**.
 ![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image1.png?raw=true)
 2. Sur la gauche, cliquez sur le bouton menu, sélectionnez **Topics (Rubriques)**, puis choisissez **Create topic (Créer une rubrique)**.
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image2.png?raw=true)
 3. Sur la page **Create topic (Créer une rubrique)**, dans la section **Details (Détails)**, configurez les options suivantes :
    * **Type :** choisissez `Standard`.
    * **Name (Nom) :** saisissez `MyCwAlarm`. 
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image3.png?raw=true)
 4. Sélectionnez **Create topic (Créer une rubrique)**.
 5. Sur la page de détails **MyCwAlarm**, cliquez sur l’onglet **Subscriptions (Abonnements)**, puis choisissez **Create subscription (Créer un abonnement)**.
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image4.png?raw=true)
 6. Sur la page **Create subscription (Créer un abonnement)**, dans la section **Details (Détails)**, configurez les options suivantes :
    * **Topic ARN (ARN de la rubrique) :** Conservez l’option sélectionnée par défaut.
    * **Protocol (Protocole) :** Dans la liste déroulante, choisissez `Email`.
    * **Endpoint (Point de terminaison) :** Saisissez une adresse e-mail valide à laquelle vous avez accès.
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image5.png?raw=true)
 7. Sélectionnez **Create subscription (Créer un abonnement)**. 
 8. Dans la section **Details (Détails)**, l’option **Status (Statut)** doit indiquer `Pending confirmation` *(En attente de confirmation)*. Vous devriez avoir reçu par e-mail le message *AWS Notification - Subscription Confirmation (Notification AWS - Confirmation de l’abonnement)* à l’adresse que vous avez spécifiée à l’étape précédente.
 9. Ouvrez l’e-mail que vous avez reçu avec la notification d’abonnement Amazon SNS, et cliquez sur **Confirm subscription (Confirmer l’abonnement)**.
