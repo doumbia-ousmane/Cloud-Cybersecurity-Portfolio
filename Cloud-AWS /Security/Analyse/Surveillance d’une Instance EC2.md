@@ -108,16 +108,25 @@ Au cours de cette tâche, vous allez examiner certaines métriques et journaux s
 1. Dans **AWS Management Console**, saisissez `CloudWatch` dans la barre de recherche, puis sélectionnez-le.
 2. Dans le volet de navigation de gauche, cliquez dans la liste déroulante **Metrics (Métriques)**, puis choisissez **All metrics (Toutes les métriques)**.
    > ℹ️ En règle générale, à l’issue d’un délai de 5 à 10 minutes suivant la création d’une instance EC2, CloudWatch récupère les détails des métriques.
+
 ![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image9.png?raw=true)
 3. Sur la page **Metrics (Métriques)**, choisissez **EC2**, puis sélectionnez **Per-Instance Metrics (Métriques par instance)**.
    * Sur cette page, vous pouvez afficher toutes les métriques consignées et l’instance EC2 associée à ces métriques.
+
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image10.png?raw=true)
 4. Cochez la case **CPUUtilization** de l’option **Metric name (Nom de métrique)** associée à l’instance EC2 **Stress Test (Test de contrainte)**.
    * Cette option affiche le graphique de la métrique d’utilisation de la CPU, qui doit normalement se rapprocher de 0 puisque rien n’a encore été fait.
+
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image11.png?raw=true)
 5. Dans le volet de navigation de gauche, cliquez dans la liste déroulante **Alarms (Alarmes)**, puis choisissez **All alarms (Toutes les alarmes)**.
    > ℹ️ Vous allez créer une alarme de métrique. Une alarme de métrique surveille une seule métrique CloudWatch ou le résultat d'une expression mathématique basée sur des métriques CloudWatch. L'alarme effectue une ou plusieurs actions en fonction de la valeur de la métrique ou de l'expression par rapport à un seuil sur un certain nombre de périodes. L’action envoie alors une notification à la rubrique SNS que vous avez créée précédemment.
 6. Sélectionnez **Create alarm (Créer une alarme)**.
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image12.png?raw=true)
 7. Choisissez successivement **Select metric (Sélectionner une métrique)**, **EC2** et **Per-Instance Metrics (Métriques par instance)**.
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image14.png?raw=true)
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image15.png?raw=true)
 8. Cochez la case **CPUUtilization** de l’option **Metric name (Nom de métrique)** associée au nom de l’instance **Stress Test (Test de contrainte)**.
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image16.png?raw=true)
 9. Choisissez **Select metric (Sélectionner une métrique)**.
 10. Sur la page **Specify metric and conditions (Spécifier les métriques et les conditions)**, configurez les options suivantes :
     * **Métrique**
@@ -125,22 +134,30 @@ Au cours de cette tâche, vous allez examiner certaines métriques et journaux s
       * **InstanceId :** Conservez l’option sélectionnée par défaut.
       * **Statistic (Statistique) :** Saisissez `Average`
       * **Period (Période) :** Dans la liste déroulante, choisissez `1 minute`.
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image17.png?raw=true)
     * **Conditions**
       * **Threshold type (Type de seuil) :** Choisissez `Static` *(Statique)*.
       * **Whenever CPUUtilization is... (Lorsque l'utilisation de la CPU est...) :** Choisissez `Greater > threshold` *(Supérieure au seuil)*.
       * **than... (à...) Define the threshold value (définir la valeur du seuil) :** Saisissez `60`
 11. Cliquez sur **Next (Suivant)**.
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image18.png?raw=true)
 12. Sur la page **Configure actions (Configurer les actions)**, configurez les options suivantes :
     * **Notification**
       * **Alarm state trigger (Déclenchement de l'état d'alarme) :** Choisissez `In alarm` *(En état d'alarme)*.
       * **Select an SNS topic (Sélectionner une rubrique SNS) :** Choisissez `Select an existing SNS topic` *(Sélectionner une rubrique SNS existante)*.
       * **Send a notification to... (Envoyer une notification à...) :** Dans la zone de texte, choisissez `MyCwAlarm`.
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image20.png?raw=true)
 13. Cliquez sur **Next (Suivant)**, puis configurez les options suivantes :
     * **Nom et description**
       * **Alarm name (Nom de l’alarme) :** Saisissez `LabCPUUtilizationAlarm`
       * **Alarm description - optional (Description de l’alarme – facultatif) :** Saisissez `CloudWatch alarm for Stress Test EC2 instance CPUUtilization`
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image21.png?raw=true)
 14. Cliquez sur **Next (Suivant)**.
 15. Lisez la page **Preview and create (Prévisualiser et créer)**, puis choisissez **Create alarm (Créer une alarme)**.
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image22.png?raw=true)
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image23.png?raw=true)
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image24.png?raw=true)
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image25.png?raw=true)
 
 #### 📝 Résumé de la tâche 2
 Au cours de cette tâche, vous avez affiché certaines métriques Amazon EC2 dans CloudWatch. Vous avez ensuite créé une alarme CloudWatch qui déclenche un état **In alarm (En état d'alarme)** lorsque l’utilisation de la CPU dépasse 60 %.
