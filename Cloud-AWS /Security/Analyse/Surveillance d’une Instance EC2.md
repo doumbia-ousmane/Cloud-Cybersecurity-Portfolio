@@ -85,9 +85,12 @@ Au cours de cette tâche, vous allez créer une rubrique SNS et vous vous y abon
 ![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image5.png?raw=true)
 7. Sélectionnez **Create subscription (Créer un abonnement)**. 
 8. Dans la section **Details (Détails)**, l’option **Status (Statut)** doit indiquer `Pending confirmation` *(En attente de confirmation)*. Vous devriez avoir reçu par e-mail le message *AWS Notification - Subscription Confirmation (Notification AWS - Confirmation de l’abonnement)* à l’adresse que vous avez spécifiée à l’étape précédente.
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image6.png?raw=true)
 9. Ouvrez l’e-mail que vous avez reçu avec la notification d’abonnement Amazon SNS, et cliquez sur **Confirm subscription (Confirmer l’abonnement)**.
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image8.png?raw=true)
 10. Retournez dans AWS Management Console. Dans le volet de navigation de gauche, choisissez **Subscriptions (Abonnements)**.
 11. L’option **Status (Statut)** doit indiquer à présent `Confirmed` *(Confirmé)*.
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image7.png?raw=true)
 
 #### 📝 Résumé de la tâche 1
 Au cours de cette tâche, vous avez créé une rubrique SNS et un abonnement à cette rubrique à l’aide d’une adresse e-mail. Avec cette rubrique, des alertes peuvent maintenant être envoyées à l’adresse e-mail associée à l’abonnement Amazon SNS.
@@ -105,6 +108,7 @@ Au cours de cette tâche, vous allez examiner certaines métriques et journaux s
 1. Dans **AWS Management Console**, saisissez `CloudWatch` dans la barre de recherche, puis sélectionnez-le.
 2. Dans le volet de navigation de gauche, cliquez dans la liste déroulante **Metrics (Métriques)**, puis choisissez **All metrics (Toutes les métriques)**.
    > ℹ️ En règle générale, à l’issue d’un délai de 5 à 10 minutes suivant la création d’une instance EC2, CloudWatch récupère les détails des métriques.
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image9.png?raw=true)
 3. Sur la page **Metrics (Métriques)**, choisissez **EC2**, puis sélectionnez **Per-Instance Metrics (Métriques par instance)**.
    * Sur cette page, vous pouvez afficher toutes les métriques consignées et l’instance EC2 associée à ces métriques.
 4. Cochez la case **CPUUtilization** de l’option **Metric name (Nom de métrique)** associée à l’instance EC2 **Stress Test (Test de contrainte)**.
