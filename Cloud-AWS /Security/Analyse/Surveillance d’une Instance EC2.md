@@ -176,7 +176,8 @@ Au cours de cette tâche, vous allez vous connecter à l’instance EC2 **Stress
    ```bash
    sudo stress --cpu 10 -v --timeout 400s
    ```
-   > ℹ️ Cette commande s’exécute pendant 400 secondes, charge la CPU à 100 %, puis réduit la charge jusqu’à 0 % à l’issue de la durée allouée.
+   > Cette commande s’exécute pendant 400 secondes, charge la CPU à 100 %, puis réduit la charge jusqu’à 0 % à l’issue de la durée allouée.
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image26.png?raw=true)
 4. Naviguez vers la page de la console Vocareum, et cliquez sur le bouton **AWS Details (Détails AWS)**.
 5. Copiez-collez l’URL située en regard de **EC2InstanceURL** dans un autre onglet du navigateur pour ouvrir une deuxième session de l’instance **Stress Test (Test de contrainte)**.
 6. Dans la nouvelle session de terminal, exécutez la commande suivante :
@@ -184,12 +185,16 @@ Au cours de cette tâche, vous allez vous connecter à l’instance EC2 **Stress
    top
    ```
    * Cette commande affiche l’utilisation de la CPU en direct.
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image27.png?raw=true)
 7. Retournez sur la console AWS où est déjà ouverte la page **Alarms (Alarmes)** de CloudWatch.
 8. Choisissez **LabCPUUtilizationAlarm**.
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image28.png?raw=true)
 9. Surveillez le graphique en même temps que vous cliquez sur le bouton **refresh (actualiser)** toutes les minutes jusqu’à ce que le statut de l’alarme devienne `In alarm` *(En état d’alarme)*.
    * Le changement de statut `In alarm` *(En état d’alarme)* et l’envoi d’un e-mail ne prennent que quelques minutes.
    * Sur le graphique, vous noterez que la valeur `CPUUtilization` a augmenté et dépasse le seuil de 60 %.
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image30.png?raw=true)
 10. Ouvrez votre boîte aux lettres électronique correspondant à l’adresse e-mail utilisée pour configurer l’abonnement Amazon SNS. Vous devriez avoir reçu un nouvel e-mail de notification du service **AWS Notifications (Notifications AWS)**.
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image29.png?raw=true)
 
 #### 📝 Résumé de la tâche 3
 Au cours de cette tâche, vous avez exécuté une commande pour augmenter la charge de la CPU de l’instance EC2 à 100 % pendant 400 secondes. Cette augmentation de l’utilisation de la CPU a activé l’alarme dont l’état est passé à **In alarm (En état d'alarme)**, et vous avez confirmé le pic de charge de la CPU sur le graphique CloudWatch. Vous avez également reçu une notification par e-mail pour vous avertir du changement de statut **In alarm (En état d'alarme)**.
@@ -206,14 +211,17 @@ Au cours de cette tâche, vous allez créer un tableau de bord CloudWatch à l�
 ### Éapes d'exécution :
 1. Naviguez jusqu’à la section **CloudWatch** de la console AWS. Dans le volet de navigation de gauche, sélectionnez **Dashboards (Tableaux de bord)**.
 2. Cliquez sur **Create dashboard (Créer un tableau de bord)**.
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image31.png?raw=true)
 3. Sous **Dashboard name (Nom du tableau de bord)**, saisissez `LabEC2Dashboard`, puis sélectionnez **Create dashboard (Créer un tableau de bord)**.
 4. Choisissez **Line (Ligne)**.
 5. Choisissez **Metrics (Métriques)**.
 6. Sélectionnez **EC2**, puis choisissez **Per-Instance Metrics (Métriques par instance)**.
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image32.png?raw=true)
 7. Cochez la case correspondant à **Stress Test (Test de contrainte)** pour **Instance name (Nom de l’instance)** et **CPUUtilization** pour **Metric name (Nom de métrique)**.
 8. Sélectionnez **Create a widget (Créer un widget)**.
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image33.png?raw=true)
 9. Cliquez sur **Save dashboard (Enregistrer le tableau de bord)**.
-
+![Configuration SNS](https://github.com/doumbia-ousmane/Cloud-Cybersecurity-Portfolio/blob/main/Cloud-AWS%20/Security/Analyse/Capture%20images/Image34.png?raw=true)
 > 🎉 Vous venez de créer un raccourci pour accéder rapidement à l’affichage de la métrique `CPUUtilization` de l’instance **Stress Test (Test de contrainte)**.
 
 ---
