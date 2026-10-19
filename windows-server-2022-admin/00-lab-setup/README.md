@@ -36,12 +36,12 @@ Disposer d'un laboratoire fonctionnel : GNS3 VM opérationnelle, topologie const
 3. Câblage : `NAT - ether1 (MikroTik)`, `ether2 (MikroTik) - switch`, puis le switch vers chaque machine.
 4. Renommer les nœuds : `GW-DOUMBIACORP`, `DC01`, `SRV02`, `CL01`.
 
-![Topologie GNS3](../assets/00-topologie-gns3.png)
+![Topologie GNS3](../assets/Phase00/00-topologie.png)
 
 ### 3. Configuration du MikroTik (console)
 
 Connexion : utilisateur `admin` (mot de passe vide au premier démarrage, RouterOS demande d'en définir un).
-
+![Topologie GNS3](../assets/Phase00/00-Mikrotik1.png)
 ```
 /system identity set name=GW-DOUMBIACORP
 /ip dhcp-client print
