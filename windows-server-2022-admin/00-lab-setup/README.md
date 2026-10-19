@@ -43,59 +43,85 @@ Disposer d'un laboratoire fonctionnel : GNS3 VM opérationnelle, topologie const
 Connexion : utilisateur `admin` (mot de passe vide au premier démarrage, RouterOS demande d'en définir un).
 
 ![Topologie GNS3](../assets/Phase00/00-Mikrotik1.png)
-```
-/system identity set name=GW-DOUMBIACORP
+
+```/system identity set name=GW-DOUMBIACORP```
+
 ![Topologie GNS3](../assets/Phase00/00-Mikrotik2.png)
-/ip dhcp-client print
+
+```/ip dhcp-client print```
+
 ![Topologie GNS3](../assets/Phase00/00-Mikrotik3.png)
-/ip dhcp-client add interface=ether1 disabled=no
-/ip address add address=192.168.10.1/24 interface=ether2
+
+```/ip dhcp-client add interface=ether1 disabled=no```
+
+```/ip address add address=192.168.10.1/24 interface=ether2```
+
 ![Topologie GNS3](../assets/Phase00/00-Mikrotik4.png)
-/ip firewall nat add chain=srcnat out-interface=ether1 action=masquerade
+
+```/ip firewall nat add chain=srcnat out-interface=ether1 action=masquerade```
+
 ![Topologie GNS3](../assets/Phase00/00-Mikrotik5.png)
-/ip dns set servers=8.8.8.8 allow-remote-requests=yes
+
+```/ip dns set servers=8.8.8.8 allow-remote-requests=yes```
+
 ![Topologie GNS3](../assets/Phase00/00-Mikrotik6.png)
-```
+
 
 Si `/ip dhcp-client print` montre déjà un client sur ether1, ne pas relancer la commande `add`.
 
 ### 4. Configuration réseau de DC01 (PowerShell administrateur)
-
-```powershell
-Rename-Computer -NewName "DC01" -Restart
-![Topologie GNS3](../assets/Phase00/00-ServerDC1.png)
 ```
+powershell
+Rename-Computer -NewName "DC01" -Restart
+```
+![Topologie GNS3](../assets/Phase00/00-ServerDC1.png)
+
 
 Après le redémarrage :
-
-```powershell
-New-NetIPAddress -InterfaceAlias "Ethernet" -IPAddress 192.168.10.10 -PrefixLength 24 -DefaultGateway 192.168.10.1
-![Topologie GNS3](../assets/Phase00/00-ServerDC3.png)
-Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses 8.8.8.8
-![Topologie GNS3](../assets/Phase00/00-ServerDC2.png)
 ```
+powershell
+New-NetIPAddress -InterfaceAlias "Ethernet" -IPAddress 192.168.10.10 -PrefixLength 24 -DefaultGateway 192.168.10.1
+```
+![Topologie GNS3](../assets/Phase00/00-ServerDC3.png)
+
+```Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses 8.8.8.8```
+
+![Topologie GNS3](../assets/Phase00/00-ServerDC2.png)
+
 
 Le nom de l'interface peut différer (`Get-NetAdapter` pour le vérifier).
 
 ## Vérification
 
-```
+
 # Sur le MikroTik
-/ip address print
+
+```/ip address print```
+
 ![Topologie GNS3](../assets/Phase00/00-Mikrotik4.png)
-/ping 8.8.8.8 count=3
+
+```/ping 8.8.8.8 count=3```
+
 ![Topologie GNS3](../assets/Phase00/00-Mikrotik6.png)
 
 # Sur DC01
-ipconfig /all
+
+```ipconfig /all```
+
 ![Topologie GNS3](../assets/Phase00/00-ServerDC4.png)
-ping 192.168.10.1
+
+```ping 192.168.10.1```
+
 ![Topologie GNS3](../assets/Phase00/00-ServerDC5.png)
-ping 8.8.8.8
+
+```ping 8.8.8.8```
+
 ![Topologie GNS3](../assets/Phase00/00-ServerDC6.png)
-ping google.com
+
+```ping google.com```
+
 ![Topologie GNS3](../assets/Phase00/00-ServerDC7.png)
-```
+
 
 Résultat attendu : les quatre pings répondent.
 
