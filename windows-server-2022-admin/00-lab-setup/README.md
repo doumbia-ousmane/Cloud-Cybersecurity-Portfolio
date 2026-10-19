@@ -93,3 +93,17 @@ Voir [../docs/troubleshooting.md](../docs/troubleshooting.md).
 - Prendre un **snapshot** de chaque machine à la fin de la phase.
 - Exporter la configuration du routeur : `/export file=gw-phase00`.
 - Ne jamais réutiliser de vrais mots de passe dans le lab.
+
+## Résultats obtenus
+
+| Test | Résultat |
+|---|---|
+| MikroTik : `/ip dhcp-client print` | ether1 `bound`, adresse 192.168.42.184/24 (fournie par le NAT) |
+| MikroTik : `/ping 8.8.8.8` et `/ping google.com` | 3/3, 0 % de perte, environ 90 ms |
+| DC01 : `ipconfig /all` | 192.168.10.10/24, passerelle 192.168.10.1, DNS 8.8.8.8 |
+| DC01 : `ping 192.168.10.1` | 4/4, 1 ms |
+| DC01 : `ping 8.8.8.8` et `ping google.com` | 4/4, 0 % de perte, environ 90 ms |
+
+Captures : `assets/00-mikrotik-dhcp-client.png`, `assets/00-mikrotik-ping.png`, `assets/00-dc01-ipconfig.png`, `assets/00-dc01-ping.png`.
+
+**Statut : phase validée.** Snapshot DC01 : `Phase00-OK`. Export routeur : `gw-phase00`.
