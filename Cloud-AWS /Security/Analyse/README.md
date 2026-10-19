@@ -1,7 +1,6 @@
 # 🖥️ Surveillance d’une Instance EC2 (AWS CloudWatch & SNS)
 
 > **Type d'atelier :** TP Pratique AWS / Observabilité & Sécurité  
-> **Durée estimée :** ⏱️ 60 minutes  
 > **Services AWS utilisés :** Amazon EC2, Amazon CloudWatch, Amazon SNS, AWS Systems Manager  
 
 ---
@@ -26,11 +25,6 @@ Au cours de cet atelier, vous allez créer une alarme **Amazon CloudWatch** qui 
 - [x] Soumettre une instance EC2 à un test de contrainte
 - [x] Confirmer qu’un e-mail Amazon SNS a été envoyé
 - [x] Créer un tableau de bord CloudWatch
-
----
-
-### ⌛ Durée
-Cet atelier dure environ **60 minutes**.
 
 ---
 
