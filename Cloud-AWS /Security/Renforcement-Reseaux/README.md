@@ -74,7 +74,7 @@ Dans le cadre de cette tâche, en attendant la fin de l'analyse, vous passez en 
 
 ### Tâche 2.1 : Examen de vos fonctions Lambda
 1. Dans les **Résultats** sur la gauche, choisissez **Tous les résultats**.
-![Resultat](../Renforcement-Reseaux/image/image1.png)
+![Resultat](/image/image1.png)
 2. Trois lignes sont affichées, une pour chaque vulnérabilité de la fonction Lambda. Vous devriez voir les principaux détails suivants :
    * **Gravité :** moyenne
    * **Ressource affectée :** vous montre la fonction Lambda concernée.
