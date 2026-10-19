@@ -25,7 +25,7 @@ Disposer d'un laboratoire fonctionnel : GNS3 VM opérationnelle, topologie const
 2. VM > Settings : **Network Adapter** en **NAT**, **Network Adapter 2** en **Host-only**.
 3. Redémarrer et vérifier que l'écran de la VM affiche une adresse IP.
 
-![Réseau VMware](../assets/00-vmware-network.png)
+![Réseau VMware](../assets/Phase00/Vmwar.png)
 
 > Cause du problème initial (eth0 sans IP) : voir [../docs/troubleshooting.md](../docs/troubleshooting.md).
 
