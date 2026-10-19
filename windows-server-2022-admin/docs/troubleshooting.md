@@ -13,3 +13,20 @@ Chaque entrée : symptôme, diagnostic, cause, solution.
   2. Passer *Network Adapter* en **NAT** et *Network Adapter 2* en **Host-only** dans VMware.
   3. Redémarrer la VM et vérifier avec `ip a`.
 - **Leçon** : en lab, privilégier NAT et Host-only, qui ne dépendent pas du réseau physique.
+
+## 002 : Erreur PowerShell « ParameterBindingException »
+
+- **Date** : 2026-10-19
+- **Symptôme** : `Remove-NetIPAddress : Impossible de trouver un paramètre positionnel acceptant l'argument « 192.168.10.2 »`.
+- **Diagnostic** : la commande tapée était `Remove-NetIPAddress -InterfaceAlias "Ethernet" IPAddress 192.168.10.2 ...` : le tiret devant `IPAddress` manquait.
+- **Cause** : sans tiret, PowerShell lit `IPAddress` comme une valeur positionnelle et ne sait plus à quel paramètre rattacher `192.168.10.2`.
+- **Solution** : retaper la commande avec `-IPAddress`.
+- **Leçon** : lire le message d'erreur (`PositionalParameterNotFound`) pointe directement vers un problème de syntaxe de paramètres ; privilégier le copier-coller pour les commandes longues.
+
+## 003 : IP de DC01 différente du plan d'adressage
+
+- **Date** : 2026-10-19
+- **Symptôme** : `ipconfig /all` affichait 192.168.10.2 au lieu de 192.168.10.10.
+- **Cause** : adresse saisie à la main différente de celle prévue dans [plan-adressage.md](plan-adressage.md).
+- **Solution** : suppression de l'ancienne adresse et de la route par défaut avec `Remove-NetIPAddress` et `Remove-NetRoute`, puis `New-NetIPAddress` avec la bonne adresse.
+- **Leçon** : corriger l'adressage avant d'installer Active Directory, car un contrôleur de domaine ne doit plus changer d'IP.
