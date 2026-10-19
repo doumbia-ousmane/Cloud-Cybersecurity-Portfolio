@@ -1,7 +1,6 @@
 # 🔍 Utilisation d'Amazon Inspector pour l'Évaluation et la Correction des Vulnérabilités
 
 > **Type d'atelier :** TP Pratique AWS / Sécurité & Audit de Vulnérabilités  
-> **Durée estimée :** ⏱️ 30 minutes  
 > **Services AWS utilisés :** Amazon Inspector, AWS Lambda, Amazon EC2, Amazon ECR  
 
 ---
