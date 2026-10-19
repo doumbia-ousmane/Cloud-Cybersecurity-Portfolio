@@ -57,6 +57,7 @@ Dans le cadre de cette tâche, vous activez et exécutez le service Amazon Inspe
 
 ### Étapes d'exécution :
 1. Dans la **Console de gestion AWS**, dans la barre de recherche en haut de la page, tapez et choisissez `Inspector`.
+![Resultat](image/image1.png)
 2. Ouvrez le panneau de gauche et choisissez **Activer Inspector** pour l'activer pour votre compte.
 3. Sous **Activer Inspector**, cliquez sur le bouton **Activer Inspector**.
    > ℹ️ **Remarque :** Cela n'est nécessaire que pour la première fois. Après l'activation, un message s'affiche en haut de la page *Bienvenue sur Inspecteur. Votre première analyse est en cours.* (*Bienvenue dans Inspector. Votre première analyse est en cours.*)
