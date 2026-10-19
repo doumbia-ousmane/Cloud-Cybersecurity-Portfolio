@@ -104,6 +104,4 @@ Voir [../docs/troubleshooting.md](../docs/troubleshooting.md).
 | DC01 : `ping 192.168.10.1` | 4/4, 1 ms |
 | DC01 : `ping 8.8.8.8` et `ping google.com` | 4/4, 0 % de perte, environ 90 ms |
 
-Captures : `assets/00-mikrotik-dhcp-client.png`, `assets/00-mikrotik-ping.png`, `assets/00-dc01-ipconfig.png`, `assets/00-dc01-ping.png`.
-
 **Statut : phase validée.** Snapshot DC01 : `Phase00-OK`. Export routeur : `gw-phase00`.
