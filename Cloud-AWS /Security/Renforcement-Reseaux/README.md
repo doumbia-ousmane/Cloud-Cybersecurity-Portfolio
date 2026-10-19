@@ -21,12 +21,6 @@ Amazon Inspector répond aux exigences relatives à l'analyse des fonctions AWS 
 - [x] Analyser et interpréter les résultats des vulnérabilités.
 - [x] Corriger les vulnérabilités détectées par Amazon Inspector.
 
----
-
-### ⌛ Durée
-Cet atelier dure environ **30 minutes**.
-
----
 
 ### 🏗️ Environnement de l'atelier
 L'environnement comporte des fonctions Lambda présentant des vulnérabilités qui seront ensuite analysées par Amazon Inspector et signalées en fonction de leur gravité.
@@ -59,12 +53,15 @@ Dans le cadre de cette tâche, vous activez et exécutez le service Amazon Inspe
 1. Dans la **Console de gestion AWS**, dans la barre de recherche en haut de la page, tapez et choisissez `Inspector`.
 ![Resultat](image/image1.png)
 2. Ouvrez le panneau de gauche et choisissez **Activer Inspector** pour l'activer pour votre compte.
+![Resultat](image/image2.png)
 3. Sous **Activer Inspector**, cliquez sur le bouton **Activer Inspector**.
-   > ℹ️ **Remarque :** Cela n'est nécessaire que pour la première fois. Après l'activation, un message s'affiche en haut de la page *Bienvenue sur Inspecteur. Votre première analyse est en cours.* (*Bienvenue dans Inspector. Votre première analyse est en cours.*)
+   > ℹ️ **Remarque :** Cela n'est nécessaire que pour la première fois. Après l'activation, un message s'affiche en haut de la page *Bienvenue sur Inspecteur.
+Votre première analyse est en cours.* (*Bienvenue dans Inspector. Votre première analyse est en cours.*)
+![Resultat](image/image3.png)
 4. Si vous êtes invité à répondre à une enquête intitulée *Feedback for Amazon Inspector (Commentaires sur Amazon Inspector)*, choisissez **Annuler**.
 5. Fermez toutes les bannières en haut de la page.
 6. Actualisez la page régulièrement jusqu'à ce que vous voyiez apparaître **Tableau de bord > Résumé > Couverture de l'environnement > Fonctions Lambda** (*Tableau de bord > Résumé > Couverture de l'environnement > Fonctions Lambda*) à **100 %**.
-
+![Resultat](image/image4.png)
 > ℹ️ Le tableau de bord indique votre numéro de compte et l'état d'activation d'AWS Lambda. Par défaut, l'analyse est activée pour l'analyse standard Amazon EC2, Amazon ECR et AWS Lambda.
 
 ---
@@ -75,15 +72,20 @@ Dans le cadre de cette tâche, en attendant la fin de l'analyse, vous passez en 
 
 ### Tâche 2.1 : Examen de vos fonctions Lambda
 1. Dans les **Résultats** sur la gauche, choisissez **Tous les résultats**.
-![Resultat](/image/image1.png)
-2. Trois lignes sont affichées, une pour chaque vulnérabilité de la fonction Lambda. Vous devriez voir les principaux détails suivants :
+![Resultat](image/image5.png)
+![Resultat](image/image6.png)
+3. Trois lignes sont affichées, une pour chaque vulnérabilité de la fonction Lambda. Vous devriez voir les principaux détails suivants :
    * **Gravité :** moyenne
    * **Ressource affectée :** vous montre la fonction Lambda concernée.
    * **Titre :** indique la raison de la découverte.
-3. Cliquez sur le bouton Radio pour **Choisir le résultat CVE-2023-32681 - requêtes**. Cela ouvre un volet contenant les informations sur la vulnérabilité.
-4. Dans le volet d'informations, dans la section **Détails de la vulnérabilité**, choisissez le lien externe à côté du champ **ID de vulnérabilité**.
+4. Cliquez sur le bouton Radio pour **Choisir le résultat CVE-2023-32681 - requêtes**. Cela ouvre un volet contenant les informations sur la vulnérabilité.
+![Resultat](image/image7.png)
+5. Dans le volet d'informations, dans la section **Détails de la vulnérabilité**, choisissez le lien externe à côté du champ **ID de vulnérabilité**.
+![Resultat](image/image9.png)
    * Le lien ouvre un nouvel onglet de navigateur vers la page Web détaillée des vulnérabilités de la *National Vulnerability Database (NVD)*, qui est un référentiel de données normalisées de gestion des vulnérabilités gérées par le *National Institute of Standards and Technology (Institut américain des normes et de la technologie, NIST)*. Cette page fournit des informations plus détaillées sur cette vulnérabilité.
-5. Dans le volet d'informations, recherchez la section **Remédiation**.
+![Resultat](image/image11.png)
+6. Dans le volet d'informations, recherchez la section **Remédiation**.
+![Resultat](image/image8.png)
    > ⚠️ Le problème est que le package `requests` est vulnérable et obsolète. Il est recommandé de le mettre à niveau. Ensuite, vous appliquez la correction à votre fonction Lambda.
 
 ---
@@ -95,20 +97,25 @@ Dans le cadre de cette tâche, vous analysez les résultats signalés par Amazon
 ### Tâche 3.1 : Corriger les vulnérabilités des packages de votre fonction Lambda
 1. Sur la **Console de gestion AWS**, dans la zone de recherche, recherchez et sélectionnez `Lambda`.
 2. Dans la liste des fonctions Lambda, choisissez la fonction `get-request`.
+![Resultat](image/image13.png)
 3. Dans le navigateur de fichiers de l'éditeur de code de fonction Lambda, choisissez `exigences.txt` (ou `requirements.txt`).
 4. Supprimez le numéro de version et les signes « égal » de `requests==2.20.0` afin que la ligne contienne uniquement `requests`.
+![Resultat](image/image14.png)
    > ℹ️ Le fichier de dépendances indique à AWS Lambda quels packages Python sont nécessaires pour exécuter votre fonction. Lorsqu'aucun numéro de version n'est spécifié, la dernière version du package est installée par défaut. Cela garantit que votre fonction Lambda utilise la dernière version du package.
 5. Cliquez sur le bouton **Déployer** pour déployer la fonction.
+![Resultat](image/image15.png)
    * Une bannière s'affiche avec le message *« La fonction get-request a été mise à jour avec succès »*.
    * Ce dernier déploiement de votre fonction Lambda incitera Amazon Inspector à lancer une nouvelle analyse de la fonction.
 6. Sur la **Console de gestion AWS**, dans la zone de recherche, recherchez et sélectionnez `Amazon Inspector`.
 7. Dans le volet de navigation situé à gauche de la page, sous **Résultats**, sélectionnez **Tous les résultats**.
+![Resultat](image/image16.png)
    > 💡 **Remarque :** Si le volet de navigation est réduit, choisissez l'icône du menu.
 8. Dans le tableau de bord des résultats, sous **Statut de résultat**, modifiez la sélection de **Actif** à **Fermé**.
 9. Dans la liste des résultats fermés, vous voyez `CVE-2023-32681 - requêtes`. Cela confirme le succès de la correction de la vulnérabilité.
    > 💡 **Remarque :** L'analyse peut prendre quelques minutes. Cliquez sur le bouton d'actualisation pour afficher l'état le plus récent de vos ressources analysées.
 10. Dans le volet de navigation situé à gauche de la page, sous **Couverture des ressources**, sélectionnez **Fonctions Lambda**.
 11. Si nécessaire, augmentez la largeur de la colonne **Dernière analyse** pour afficher l'horodatage complet.
+ ![Resultat](image/image17.png)
     * Vous pouvez voir que la fonction Lambda analysée la plus récemment possède un horodatage mis à jour.
 
 ---
