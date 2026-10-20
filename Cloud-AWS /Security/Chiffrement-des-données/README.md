@@ -228,6 +228,7 @@ Au cours de cette tâche, vous allez créer un fichier texte qui contient des do
  ![Resultat](image/image27.png)
     > ℹ️ Une fois que le processus de déchiffrement a abouti, vous pouvez visualiser le contenu d’origine du texte brut dans le fichier `secret1.txt`.  
     > *Le diagramme illustre le mode d’utilisation de la même clé secrète et de l’algorithme symétrique du processus de chiffrement dans la transformation du texte chiffré en texte brut.*
+
 ![Resultat](image/Symmetric_Key_Decryption.png)
 
 #### 📝 Résumé de la tâche 3
