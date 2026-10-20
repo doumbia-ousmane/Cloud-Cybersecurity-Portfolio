@@ -65,16 +65,23 @@ Au cours de cette tâche, vous allez créer une clé AWS KMS que vous utiliserez
 ### Étapes d'exécution :
 1. Dans la console, saisissez `KMS` dans la barre de recherche, puis sélectionnez **Key Management Service**.
 2. Sélectionnez **Create a key (Créer une clé)**.
+![Resultat](image/image1.png)
 3. Sous **Key type (Type de clé)**, sélectionnez **Symmetric (Symétrique)**, puis cliquez sur **Suivant**.
+![Resultat](image/image2.png)
    > ℹ️ Le chiffrement *Symmetric (Symétrique)* utilise la même clé pour chiffrer et déchiffrer les données, ce qui rend son utilisation rapide et efficace. Le chiffrement *Asymmetric (Asymétrique)* utilise une clé publique pour chiffrer les données et une clé privée pour les déchiffrer.
 4. Sur la page **Add labels (Ajouter des étiquettes)**, configurez les options suivantes :
    * **Alias :** `MyKMSKey`
    * **Description :** `Key used to encrypt and decrypt data files.` *(Clé utilisée pour chiffrer et déchiffrer les fichiers de données)*
+![Resultat](image/image3.png)
 5. Cliquez sur **Next (Suivant)**.
 6. Sur la page **Define key administrative permissions (Définir les autorisations d’administration des clés)**, dans la section **Key administrators (Administrateurs de clés)**, cochez la case **voclabs**, puis cliquez sur **Next (Suivant)**.
+![Resultat](image/image4.png)
 7. Sur la page **Define key usage permissions (Définir les autorisations d’utilisation des clés)**, dans la section **This account (Ce compte)**, cochez la case **voclabs**, puis cliquez sur **Next (Suivant)**.
+![Resultat](image/image5.png)
 8. Vérifiez les paramètres, puis sélectionnez **Finish (Terminer)**.
+![Resultat](image/image9.png)
 9. Sélectionnez le lien **MyKMSKey**, que vous venez de créer, et copiez-collez la valeur **ARN** (*Amazon Resource Name*) dans un éditeur de texte.
+ ![Resultat](image/image10.png)
    > 💡 Vous utiliserez cette valeur ARN copiée par la suite dans l'atelier.
 
 #### 📝 Résumé de la tâche 1
@@ -86,10 +93,11 @@ Au cours de cette tâche, vous avez créé une clé AWS KMS symétrique et vous 
 
 Avant de commencer à chiffrer et déchiffrer les données, vous devez procéder à un certain nombre de configurations. Pour utiliser votre clé AWS KMS, vous devez configurer les informations d’identification AWS sur l’instance EC2 **File Server (Serveur de fichiers)**. Ensuite, vous allez installer l’interface de ligne de commande (CLI) AWS (`aws-encryption-cli`), qui vous permettra d’exécuter les commandes de chiffrement et de déchiffrement.
 
-### Étapes d'exécution :
 1. Dans la console, saisissez `EC2` dans la barre de recherche, puis sélectionnez **EC2**.
+![Resultat](image/image11.png)
 2. Dans la liste **Instances**, cochez la case en regard de l’instance **File Server (Serveur de fichiers)**, puis choisissez **Connect (Se connecter)**.
 3. Cliquez sur l’onglet **Session Manager (Gestionnaire de session)**, puis choisissez **Connect (Se connecter)**.
+![Resultat](image/image12.png)
 4. Pour passer dans le répertoire racine et créer un fichier d’informations d’identification AWS, exécutez les commandes suivantes :
    ```bash
    cd ~
@@ -101,6 +109,7 @@ Avant de commencer à chiffrer et déchiffrer les données, vous devez procéder
    * **Default region name (Nom de la région par défaut) :** Copiez et collez la région désignée sur la page **AWS Details (Détails AWS)** Vocareum.
      > 💡 **Conseil :** Vous devrez peut-être appuyer sur `Ctrl+Maj+V` pour coller le contenu dans Session Manager (Gestionnaire de session).
    * **Default output format (Format de sortie par défaut) :** Appuyez sur Entrée.
+ ![Resultat](image/image13.png)
    > ℹ️ Le fichier de configuration AWS est créé, et vous le mettrez à jour à une étape ultérieure. Les entrées précédentes de `1` sont des emplacements réservés temporaires.
 6. Naviguez vers la page de la console Vocareum, et cliquez sur le bouton **AWS Details (Détails AWS)**.
 7. En regard d’**AWS CLI**, sélectionnez **Show (Afficher)**.
@@ -113,17 +122,20 @@ Avant de commencer à chiffrer et déchiffrer les données, vous devez procéder
 11. Dans le fichier `~/.aws/credentials`, saisissez plusieurs fois `dd` pour supprimer le contenu du fichier.
 12. Collez le bloc de code que vous avez copié depuis Vocareum.
     * Le fichier d’informations d’identification AWS doit maintenant contenir les identifiants mis à jour.
+![Resultat](image/image14.png)
 13. Pour enregistrer et fermer le fichier, appuyez sur la touche `Échap`, saisissez `:wq`, puis appuyez sur `Entrée`.
 14. Pour afficher le contenu mis à jour du fichier, exécutez la commande suivante :
     ```bash
     cat ~/.aws/credentials
     ```
+![Resultat](image/image15.png)
 15. Maintenant, vous allez installer l’interface de ligne de commande (CLI) AWS Encryption et exporter le chemin d’accès. Ainsi, vous serez en mesure d’exécuter les commandes pour chiffrer et déchiffrer les données.
 16. Pour installer l’interface de ligne de commande (CLI) AWS Encryption et définir le chemin d’accès, exécutez les commandes suivantes :
     ```bash
     pip3 install aws-encryption-sdk-cli
     export PATH=$PATH:/home/ssm-user/.local/bin
     ```
+![Resultat](image/image16.png)
 
 #### 📝 Résumé de la tâche 2
 Au cours de cette tâche, vous avez configuré le fichier d’informations d’identification AWS qui permet d’utiliser la clé AWS KMS que vous avez créée précédemment. Vous avez ensuite installé l’interface de ligne de commande AWS Encryption pour exécuter les commandes de chiffrement.
@@ -140,10 +152,12 @@ Au cours de cette tâche, vous allez créer un fichier texte qui contient des do
    touch secret1.txt secret2.txt secret3.txt
    echo 'TOP SECRET 1!!!' > secret1.txt
    ```
+![Resultat](image/image17.png)
 2. Pour afficher le contenu du fichier `secret1.txt`, exécutez la commande suivante :
    ```bash
    cat secret1.txt
    ```
+![Resultat](image/image18.png)
 3. Pour créer un répertoire pour le fichier chiffré, exécutez la commande suivante :
    ```bash
    mkdir output
@@ -159,6 +173,7 @@ Au cours de cette tâche, vous allez créer un fichier texte qui contient des do
    ```bash
    aws-encryption-cli --encrypt                       --input secret1.txt                       --wrapping-keys key=$keyArn                       --metadata-output ~/metadata                       --encryption-context purpose=test                       --commitment-policy require-encrypt-require-decrypt                       --output ~/output/.
    ```
+ ![Resultat](image/image21.png)
    > **Détails des paramètres de la commande :**  
    > * La première ligne chiffre le contenu du fichier. La commande utilise le paramètre `--encrypt` pour spécifier l’opération et le paramètre `--input` pour désigner le fichier à chiffrer.  
    > * Le paramètre `--wrapping-keys`, et son attribut de `key` requis, indique à la commande d’utiliser la clé AWS KMS représentée par la valeur ARN de la clé.  
@@ -172,6 +187,7 @@ Au cours de cette tâche, vous allez créer un fichier texte qui contient des do
    ```bash
    echo $?
    ```
+  ![Resultat](image/image22.png)
    * Si la commande a abouti, la valeur de `$?` est `0`. Si la commande a échoué, la valeur n’est pas nulle.
 8. Pour afficher l’emplacement du nouveau fichier chiffré, exécutez la commande suivante :
    ```bash
@@ -181,31 +197,38 @@ Au cours de cette tâche, vous allez créer un fichier texte qui contient des do
      ```text
      secret1.txt.encrypted
      ```
+![Resultat](image/image23.png)
 9. Pour afficher le contenu du nouveau fichier chiffré, exécutez les commandes suivantes :
    ```bash
    cd output
    cat secret1.txt.encrypted
    ```
+  ![Resultat](image/image24.png)
    > ℹ️ Le processus de chiffrement et de déchiffrement traite les données en texte brut, qui sont lisibles et compréhensibles, et les transforme pour créer un texte chiffré qui est ce que nous voyons actuellement.  
    > Lorsque les données ont été transformées en texte chiffré, le texte brut devient inaccessible jusqu’au processus de déchiffrement.  
    > *Le diagramme de fonctionnement illustre le mode de fonctionnement du chiffrement avec des clés symétriques et des algorithmes. Une clé symétrique et un algorithme sont utilisés pour convertir un message en clair en message chiffré.*
+![Resultat](image/Symmetric_Key_Encryption.png)
 10. Appuyez sur **Enter (Entrée)**.
 11. Ensuite, vous allez déchiffrer le fichier `secret1.txt.encrypted`.
 12. Pour déchiffrer le fichier, exécutez la commande suivante :
     ```bash
     aws-encryption-cli --decrypt                        --input secret1.txt.encrypted                        --wrapping-keys key=$keyArn                        --commitment-policy require-encrypt-require-decrypt                        --encryption-context purpose=test                        --metadata-output ~/metadata                        --max-encrypted-data-keys 1                        --buffer                        --output .
     ```
+![Resultat](image/image25.png)
 13. Pour afficher le nouvel emplacement du nouveau fichier, exécutez la commande suivante :
     ```bash
     ls
     ```
+  ![Resultat](image/image26.png)
     * Le fichier `secret1.txt.encrypted.decrypted` contient le contenu déchiffré du fichier `secret1.txt.encrypted`.
 14. Pour afficher le contenu du fichier déchiffré, exécutez la commande suivante :
     ```bash
     cat secret1.txt.encrypted.decrypted
     ```
+ ![Resultat](image/image27.png)
     > ℹ️ Une fois que le processus de déchiffrement a abouti, vous pouvez visualiser le contenu d’origine du texte brut dans le fichier `secret1.txt`.  
     > *Le diagramme illustre le mode d’utilisation de la même clé secrète et de l’algorithme symétrique du processus de chiffrement dans la transformation du texte chiffré en texte brut.*
+![Resultat](image/Symmetric_Key_Decryption.png)
 
 #### 📝 Résumé de la tâche 3
 Au cours de cette tâche, vous avez appris à chiffrer des données en texte clair en texte chiffré à l’aide de la commande `--encrypt`. Vous avez ensuite réussi à déchiffrer le texte et à le transformer en données d’origine à la fois claires et lisibles.
