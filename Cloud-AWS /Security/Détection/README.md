@@ -81,10 +81,12 @@ Au cours de cette tâche, vous devez vous connecter à l’instance EC2 **TestIn
    ```bash
    wget http://malware.wicar.org/data/js_crypto_miner.html
    ```
+![Resultat](image/Image1.png)
 6. Dans cet environnement d’atelier protégé, entrez le code suivant et appuyez sur **Entrée** pour télécharger le reste du logiciel malveillant :
    ```bash
    wget http://malware.wicar.org/data/java_jre17_exec.html
    ```
+ ![Resultat](image/Image2.png)
    > **Conseil :** Appuyez sur **Entrée** après avoir copié-collé chaque ligne de code pour garantir l’exécution des deux lignes de code.  
    >  
    > ⚠️ **Avertissement :** Ces fichiers sont créés spécifiquement à des fins de test et d’apprentissage sur les programmes anti-malware. Ne les utilisez pas en dehors du cadre de cet environnement d’atelier protégé.
@@ -95,6 +97,8 @@ Au cours de cette tâche, vous devez vous connecter à l’instance EC2 **TestIn
    ls
    ```
    * La sortie devrait ressembler à l’exemple suivant :
+
+![Resultat](image/Image3.png)
 
 ### Résumé de la tâche 1
 Au cours de cet atelier, vous avez confirmé que l’URL du site hébergeant les fichiers malveillants était accessible sur le réseau actuel et le pare-feu du réseau utilisé par AnyCompany. Vous avez utilisé une instance EC2 **TestInstance** isolée pour exécuter des commandes et télécharger les mêmes fichiers malveillants que ceux téléchargés par les utilisateurs. Maintenant, vous devez corriger le problème du pare-feu du réseau d’AnyCompany pour bloquer l’accès à ce site.
@@ -107,15 +111,20 @@ Au cours de cette tâche, vous allez examiner le pare-feu AWS Network Firewall q
 
 1. Dans **AWS Management Console**, saisissez `VPC` dans la barre de recherche, puis sélectionnez **VPC**.
 2. Dans le volet de navigation de gauche, sous **NETWORK FIREWALL (PARE-FEU RÉSEAU)**, choisissez **Firewalls (Pare-feu)**.
+![Resultat](image/Image4.png)
 3. Sélectionnez **LabFirewall**, puis lisez les trois étapes de la section **Overview (Présentation)**.
+![Resultat](image/Image5.png)
 4. Dans la section **Step 2: Configure the firewall policy (Étape 2 : Configurer la politique de pare-feu)**, cliquez sur le lien **LabFirewallPolicy** pour accéder à la politique associée.
+![Resultat](image/Image6.png)
    * Une politique de pare-feu définit le fonctionnement du pare-feu dans un ensemble de groupes de règles avec et sans état et d’autres paramètres.
 5. Dans la section **Stateless default actions (Actions par défaut sans état)**, choisissez **Edit (Modifier)**.
 6. Pour **Stateless default actions (Actions par défaut sans état)**, configurez les options suivantes :
    * **Choose how to treat fragmented packets (Choisir le mode de traitement des paquets fragmentés) :** Choisissez **Use the same actions for all packets (Utiliser les mêmes actions pour tous les paquets)**.
    * **Action :** Choisissez **Forward to stateful rule groups (Transmettre aux groupes de règles avec état)**.
+![Resultat](image/Image7.png)
 7. Sélectionnez **Save (Enregistrer)**.
 
+![Resultat](image/Image8.png)
 Ces paramètres permettent maintenant de transmettre tous les paquets à un groupe de règles avec état pour un examen plus approfondi.
 
 Un moteur de règles avec état examine les paquets dans le contexte de leur flux de trafic. Il offre la possibilité d’utiliser des règles plus complexes et consigner le trafic réseau et les alertes de trafic du pare-feu d’AWS Network Firewall. Les règles avec état prennent en compte le sens du trafic. Le moteur de règles avec état peut retarder la livraison des paquets du groupe en cas d’inspection.
@@ -137,18 +146,22 @@ Un groupe de règles pour le pare-feu du réseau est un ensemble de critères r�
 2. Sélectionnez **Create Network Firewall rule group (Créer un groupe de règles de pare-feu réseau)**.
 3. Sur la page **Create Network Firewall rule group (Créer un groupe de règles de pare-feu réseau)**, configurez les options suivantes :
    * Pour **Rule group type (Type de groupe de règles)**, choisissez **Stateful rule group (Groupe de règles avec état)**.
+![Resultat](image/Image10.png)
 4. Dans la section **Stateful rule group (Groupe de règles avec état)**, configurez les options suivantes :
    * **Name (Nom) :** Saisissez `StatefulRuleGroup`
    * **Capacity (Capacité) :** Saisissez `100`
    * **Stateful rule group options (Options du groupe de règles avec état) :** Choisissez **Suricata compatible IPS rules (Règles IPS compatibles avec Suricata)**.
+![Resultat](image/Image11.png)
    * *Les règles d’un système de prévention des intrusions (IPS) offrent des règles de pare-feu avancées qui utilisent la syntaxe Suricata. Suricata est un système IPS réseau open source qui comprend un langage standard basée sur des règles concernant l’inspection des paquets.*
 5. Dans la section **Suricata compatible IPS rules (Règles IPS compatibles avec Suricata)**, entrez le code suivant dans la zone de texte :
    ```suricata
    drop http $HOME_NET any -> $EXTERNAL_NET 80 (msg:"MALWARE custom solution"; flow: to_server,established; classtype:trojan-activity; sid:2002001; content:"/data/js_crypto_miner.html";http_uri; rev:1;)
    drop http $HOME_NET any -> $EXTERNAL_NET 80 (msg:"MALWARE custom solution"; flow: to_server,established; classtype:trojan-activity; sid:2002002; content:"/data/java_jre17_exec.html";http_uri; rev:1;)
    ```
+![Resultat](image/Image12.png)
    * Les deux règles Suricata que vous venez d’ajouter bloquent le trafic correspondant aux URL `http_uri contents /data/js_crypto_miner.html` et `http_uri contents /data/js_crypto_miner.html` lorsque le trafic provient de LabVPC à destination du réseau public.
 6. Choisissez **Create stateful rule group (Créer un groupe de règles avec état)**.
+![Resultat](image/Image14.png)
 
 ### Résumé de la tâche 3
 Au cours de cette tâche, vous avez créé un groupe de règles pour le pare-feu du réseau avec état qui fait appel aux règles Suricata. Une fois que vous associez ce groupe de règles au pare-feu réseau, il bloque les sites web malveillants auxquels ont accès les utilisateurs AnyCompany.
@@ -214,3 +227,12 @@ Au cours de cette tâche, vous allez vous connecter de nouveau à **TestInstance
 
 ### Résumé de la tâche 5
 Au cours de cette tâche, vous avez vérifié que le pare-feu du réseau a été mis à jour et configuré correctement pour bloquer l’accès aux sites web malveillants. Vous avez confirmé que l’accès est bloqué en vous connectant à l’instance EC2 **TestInstance** et en exécutant la commande `wget` sur ces fichiers. Les utilisateurs n’ont maintenant plus accès à ces fichiers de logiciels malveillants de ce site web.
+
+### 🏆 Conclusion
+Félicitations ! Vous avez réussi à :
+
+- [x] Mettre à jour un pare-feu réseau
+
+- [x] Créer un groupe de règles pour le pare-feu
+
+- [x] Tester et vérifier que l’accès aux sites malveillants est bloqué
