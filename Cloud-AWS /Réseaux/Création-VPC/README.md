@@ -276,3 +276,36 @@ Vous allez maintenant vous connecter à l'instance privée, qui se trouve dans l
 3. Revenez dans la fenêtre de terminal et exécutez la commande suivante. Dans la commande, remplacez `PRIVATE-IP` par l'adresse IP que vous venez de copier dans votre presse-papiers :
    ```bash
    ssh PRIVATE-IP
+*La commande que vous exécutez doit être similaire à ce qui suit :* `ssh 10.0.2.123`
+
+1. Si le message *« Are you sure you want to continue connecting » (Voulez-vous vraiment poursuivre la connexion)* s'affiche, entrez `yes`.
+2. Lorsque vous êtes invité(e) à entrer un mot de passe, entrez `lab-password`.
+
+*Vous devriez à présent être connecté(e) à l'instance privée. Au cours de cette tâche, vous vous êtes d'abord connecté(e) au serveur Bastion (dans le sous-réseau public), puis à l'instance privée (dans le sous-réseau privé).*
+
+---
+
+### 🧪 Test de la passerelle NAT
+
+La dernière partie de ce défi consiste à confirmer que l'instance privée peut accéder à Internet. Pour ce faire, vous allez exécuter la commande `ping`.
+
+1. Exécutez la commande suivante :
+   ```bash
+   ping -c 3 amazon.com
+   Un résultat similaire à ce qui suit devrait s'afficher :
+
+   ```text
+   PING amazon.com (176.32.98.166) 56(84) bytes of data.
+   64 bytes from 176.32.98.166 (176.32.98.166): icmp_seq=1 ttl=222 time=79.2 ms
+   64 bytes from 176.32.98.166 (176.32.98.166): icmp_seq=2 ttl=222 time=79.2 ms
+   64 bytes from 176.32.98.166 (176.32.98.166): icmp_seq=3 ttl=222 time=79.0 ms
+
+*Ce résultat indique que l'instance privée a communiqué avec succès avec amazon.com sur Internet. L'instance privée se trouve dans le sous-réseau privé et la seule façon d'y accéder dans notre cas consiste à passer par la passerelle NAT. Ce résultat confirme que votre configuration réseau a réussi.*
+
+## 🏆 Conclusion
+
+**Félicitations !** Vous avez réussi à effectuer les tâches suivantes :
+- [x] Créer un VPC avec un sous-réseau privé, un sous-réseau public, une passerelle Internet et une passerelle NAT
+- [x] Configurer les tables de routage associées aux sous-réseaux pour le trafic local et Internet en utilisant une passerelle Internet et une passerelle NAT
+- [x] Lancer un serveur Bastion dans un sous-réseau public
+- [x] Utiliser un serveur Bastion pour vous connecter à une instance dans un sous-réseau privé
