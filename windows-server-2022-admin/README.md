@@ -37,8 +37,8 @@ Détails : [docs/architecture.md](docs/architecture.md) et [docs/plan-adressage.
 
 | Phase | Sujet | Statut |
 |---|---|---|
-| 00 | [Préparation du lab](00-lab-setup/README.md) | Terminer |
-| 01 | [Installation et configuration de base](01-installation-base/README.md) | En cours |
+| 00 | [Préparation du lab](00-lab-setup/README.md) | Terminé |
+| 01 | [Installation et configuration de base](01-installation-base/README.md) | Terminé (mises à jour Windows partielles, voir dépannage 006) |
 | 02 | Active Directory Domain Services | À faire |
 | 03 | DNS et DHCP | À faire |
 | 04 | Stratégies de groupe (GPO) | À faire |
