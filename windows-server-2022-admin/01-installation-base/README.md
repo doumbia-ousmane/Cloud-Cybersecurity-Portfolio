@@ -105,7 +105,7 @@ Get-Service WinRM
 Test-WSMan localhost
 Get-HotFix | Sort-Object InstalledOn -Descending | Select-Object -First 5
 ```
-![Fuseau après](../assets/Phase01/01-timezone-apres.png)
+![Fuseau après](../assets/Phase01/01-Verification-des-commande.png)
 ![Fuseau après](../assets/Phase01/01-verification-WinRM.png)
 ![Fuseau après](../assets/Phase01/01-verification-HotFix.png)
 
