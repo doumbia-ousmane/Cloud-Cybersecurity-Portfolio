@@ -28,7 +28,7 @@ slmgr /dlv
 
 Résultat : Windows Server 2022 **Standard**, canal `VOLUME_KMSCLIENT` (clé générique GVLK), statut **notification** (non activé, aucun serveur KMS dans le lab, code `0xC004F056`). Le serveur fonctionne normalement ; usage laboratoire uniquement.
 
-![slmgr](../assets/01-slmgr-dlv.png)
+![slmgr](../assets/Phase01/01-slmgr-dlv.png)
 
 ### 2. Fuseau horaire
 
@@ -40,14 +40,15 @@ Get-Date
 
 Avant : `Romance Standard Time` (UTC+01:00, avec heure d'été), soit environ 2 heures d'écart avec l'heure réelle. Après : `Greenwich Standard Time` (UTC+00:00, sans changement d'heure), adapté au Mali.
 
-![Fuseau avant](../assets/01-timezone-avant.png)
-![Fuseau après](../assets/01-timezone-apres.png)
+![Fuseau avant](../assets/Phase01/01-timezone-avant.png)
+![Fuseau après](../assets/Phase01/01-timezone-apres.png)
 
 ### 3. Autoriser les pings entrants (choix de lab)
 
 ```powershell
 New-NetFirewallRule -DisplayName "Lab - Autoriser ICMPv4 Echo" -Protocol ICMPv4 -IcmpType 8 -Direction Inbound -Action Allow
 ```
+![Autoriser](../assets/Phase01/01-Autoriser-Ping-Firewall.png)
 
 Réévalué en phase 06 (durcissement).
 
@@ -76,8 +77,8 @@ Remarque : la colonne `CPU(s)` est le temps processeur **cumulé**, pas la charg
 
 Espace disque : 11,36 Go utilisés, 87,99 Go libres.
 
-![Where-Object](../assets/01-where-object.png)
-![Sort-Object](../assets/01-sort-object.png)
+![Where-Object](../assets/Phase01/01-where-object.png)
+![Sort-Object](../assets/Phase01/01-sort-object.png)
 
 ### 6. Mises à jour Windows (`sconfig`)
 
@@ -104,6 +105,9 @@ Get-Service WinRM
 Test-WSMan localhost
 Get-HotFix | Sort-Object InstalledOn -Descending | Select-Object -First 5
 ```
+![Fuseau après](../assets/Phase01/01-timezone-apres.png)
+![Fuseau après](../assets/Phase01/01-verification-WinRM.png)
+![Fuseau après](../assets/Phase01/01-verification-HotFix.png)
 
 | Contrôle | Résultat |
 |---|---|
