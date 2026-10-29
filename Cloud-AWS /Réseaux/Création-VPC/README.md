@@ -12,6 +12,8 @@
 
 Au cours de cet atelier, vous créez un cloud privé virtuel (VPC) et d'autres composants réseau nécessaires au déploiement de ressources, telles qu'une instance **Amazon Elastic Compute Cloud (Amazon EC2)**.
 
+![Architecture](image/architecture.png)
+
 ---
 
 ### 🎯 Objectifs
@@ -48,8 +50,11 @@ Au cours de cette tâche, vous allez créer un VPC.
 
 1. Dans la barre de recherche de la Console de gestion AWS, saisissez et sélectionnez `VPC` pour accéder à la Console de gestion VPC.
 2. Dans le volet de navigation de gauche, pour **Cloud privé virtuel**, choisissez **Vos VPC**.
-   > ℹ️ Dans chaque région, un VPC par défaut avec le bloc d'adresse CIDR (*Classless Inter-Domain Routing*) `172.31.0.0/16` a déjà été créé pour vous. Même si vous n'avez encore rien créé dans votre compte, vous allez voir certaines ressources de VPC préexistantes.
-3. Choisissez **Créer un VPC** et configurez les options suivantes :
+
+![Resultats](image/image1.png)
+  
+    > ℹ️ Dans chaque région, un VPC par défaut avec le bloc d'adresse CIDR (*Classless Inter-Domain Routing*) `172.31.0.0/16` a déjà été créé pour vous. Même si vous n'avez encore rien créé dans votre compte, vous allez voir certaines ressources de VPC préexistantes.
+4. Choisissez **Créer un VPC** et configurez les options suivantes :
    * **Ressources à créer :** choisissez `VPC uniquement`.
    * **Identification de nom :** entrez `Lab VPC`.
    * **IPv4 CIDR block (Bloc d'adresse CIDR IPv4) :** choisissez `IPv4 CIDR manual input (Saisie manuelle du CIDR IPv4)`.
@@ -57,11 +62,22 @@ Au cours de cette tâche, vous allez créer un VPC.
    * **IPv6 CIDR block (Bloc d'adresse CIDR IPv6) :** choisissez `No IPv6 CIDR block (Aucun bloc d'adresse CIDR IPv6)`.
    * **Location :** choisissez `Par défaut`.
    * **Balises :** conservez les balises suggérées.
-4. Choisissez **Créer un VPC**.
+![Resultats](image/image2.png)
+![Resultats](image/image3.png)
+5. Choisissez **Créer un VPC**.
    * *En haut de la page, un message similaire à ce qui suit s'affiche : « Vous avez créé avec succès vpc-NNNNNNNNNNN / Lab VPC. »*
-5. Choisissez **Actions**, puis **Modifier les paramètres VPC**.
-6. Dans la section **Paramètres DNS**, sélectionnez **Activer les noms d'hôte DNS**.
-7. Sélectionnez **Enregistrer**.
+
+![Resultats](image/image4.png)
+
+6. Choisissez **Actions**, puis **Modifier les paramètres VPC**.
+
+![Resultats](image/image5.png)
+
+7. Dans la section **Paramètres DNS**, sélectionnez **Activer les noms d'hôte DNS**.
+
+![Resultats](image/image6.png)
+
+8. Sélectionnez **Enregistrer**.
    * *Les instances EC2 lancées dans le VPC reçoivent désormais automatiquement un nom d'hôte DNS IPv4 public.*
 
 ---
@@ -73,17 +89,31 @@ Au cours de cette tâche, vous allez créer un sous-réseau public et un sous-r�
 ### 🌐 Tâche 2.1 : Création d'un sous-réseau public
 
 1. Dans le volet de navigation de gauche, pour **Cloud privé virtuel**, choisissez **Sous-réseaux**.
+
+![Resultats](image/image7.png)
+
 2. Choisissez **Créer un sous-réseau** et configurez les options suivantes :
    * **ID de VPC :** choisissez `Lab VPC`.
    * **Nom du sous-réseau :** entrez `Public Subnet`.
    * **Zone de disponibilité :** choisissez la première zone de disponibilité de la liste. *(Ne choisissez pas Aucune préférence)*.
    * **IPv4 CIDR block (Bloc d'adresse CIDR IPv4) :** entrez `10.0.0.0/24`.
+![Resultats](image/image8.png)
+![Resultats](image/image9.png)
+![Resultats](image/image10.png)
+
 3. Choisissez **Créer un sous-réseau**.
+
+![Resultats](image/image11.png)
+
 4. Vous allez à présent configurer le sous-réseau public de sorte à attribuer automatiquement une adresse IP publique à toutes les instances EC2 lancées dans celui-ci :
    * Sélectionnez **Public Subnet**.
    * Choisissez **Actions**, puis **Modifier les paramètres de sous-réseau**.
    * Dans la section **Paramètres d'attribution automatique d'une adresse IP**, sélectionnez `Enable auto-assign public IPv4 address` *(Activer l'attribution automatique d'une adresse IPv4 publique)*.
    * Sélectionnez **Enregistrer**.
+![Resultats](image/image12.png)
+![Resultats](image/image13.png)
+![Resultats](image/image14.png)
+![Resultats](image/image15.png)
 
 > ℹ️ Bien que ce sous-réseau ait été nommé **Public Subnet**, il n'est pas encore public. Un sous-réseau public doit avoir une passerelle Internet, que vous attacherez au cours d'une tâche ultérieure de l'atelier.
 
@@ -96,7 +126,13 @@ Au cours de cette tâche, vous créez le sous-réseau privé qui est utilisé po
    * **Nom du sous-réseau :** entrez `Private Subnet`.
    * **Zone de disponibilité :** choisissez la première zone de disponibilité de la liste. *(Ne choisissez pas Aucune préférence)*.
    * **IPv4 CIDR block (Bloc d'adresse CIDR IPv4) :** entrez `10.0.2.0/23`.
+![Resultats](image/image16.png)
+![Resultats](image/image17.png)
+![Resultats](image/image18.png)
+
 2. Choisissez **Créer un sous-réseau**.
+
+![Resultats](image/image19.png)
 
 > ℹ️ Le bloc d'adresse CIDR `10.0.2.0/23` inclut toutes les adresses IP qui commencent par `10.0.2.x` et `10.0.3.x`. Cette plage est deux fois plus grande que le sous-réseau public, car la plupart des ressources doivent être conservées dans des sous-réseaux privés, sauf si elles doivent être spécifiquement accessibles depuis Internet.
 
@@ -109,10 +145,25 @@ Au cours de cette tâche, vous créez le sous-réseau privé qui est utilisé po
 Au cours de cette tâche, vous allez créer une passerelle Internet pour votre VPC. Une passerelle Internet est nécessaire pour établir une connectivité externe aux instances EC2 dans les VPC.
 
 1. Dans le volet de navigation de gauche, pour **Cloud privé virtuel**, choisissez **Passerelles Internet**.
+
+![Resultats](image/image20.png)
+
 2. Choisissez **Créer une passerelle Internet** et pour **Identification de nom**, entrez `Lab IGW`.
+
+![Resultats](image/image21.png)
+
 3. Choisissez **Créer une passerelle Internet**.
+
+![Resultats](image/image22.png)
+
 4. Choisissez **Actions**, puis **Attacher à un VPC**.
+
+![Resultats](image/image23.png)
+
 5. Dans la liste déroulante, sélectionnez `Lab VPC`, puis choisissez **Attacher une passerelle Internet**.
+
+![Resultats](image/image24.png)
+![Resultats](image/image25.png)
 
 *Votre sous-réseau public dispose désormais d'une connexion à Internet. Cependant, pour acheminer le trafic vers Internet, vous devez également configurer la table de routage du sous-réseau public afin qu'elle utilise la passerelle Internet.*
 
@@ -126,10 +177,16 @@ Au cours de cette tâche, vous allez effectuer les actions suivantes :
 - Associer le sous-réseau public à la nouvelle table de routage.
 
 1. Dans le volet de navigation de gauche, pour **Cloud privé virtuel**, choisissez **Tables de routage**.
+
+ ![Resultats](image/image26.png)
+ 
    * *Plusieurs tables de routage sont répertoriées.*
 2. Sélectionnez la table de routage qui indique `Lab VPC` dans la colonne VPC.
    > 💡 **Astuce :** Si vous ne voyez pas la colonne VPC, faites défiler l'écran vers la droite.
 3. Dans la colonne Nom, cliquez sur l'icône de modification, entrez `Private Route Table` pour Edit Name *(Modifier le nom)*, puis choisissez **Enregistrer**.
+
+![Resultats](image/image27.png)
+
 4. Cliquez sur l'onglet **Routes**.
    * *Il n'y a actuellement qu'un seul acheminement. Cela indique que l'ensemble du trafic destiné à `10.0.0.0/16` (qui est la plage de Lab VPC) sera acheminé localement. Cette option permet à tous les sous-réseaux au sein d'un VPC de communiquer entre eux.*
 5. Vous allez maintenant créer une table de routage publique pour envoyer le trafic public vers la passerelle Internet :
@@ -137,17 +194,37 @@ Au cours de cette tâche, vous allez effectuer les actions suivantes :
      * **Nom - facultatif :** entrez `Public Route Table`.
      * **VPC :** choisissez `Lab VPC`.
    * Choisissez **Créer une table de routage**.
+
+![Resultats](image/image28.png)
+![Resultats](image/image29.png)
+
 6. Une fois la table de routage créée, dans l'onglet **Routes**, choisissez **Modifier des routes**.
-   > ℹ️ Vous allez à présent ajouter un acheminement pour diriger le trafic Internet (`0.0.0.0/0`) vers la passerelle Internet.
+
+![Resultats](image/image30.png)
+
+    > ℹ️ Vous allez à présent ajouter un acheminement pour diriger le trafic Internet (`0.0.0.0/0`) vers la passerelle Internet.
    * Choisissez **Ajouter une route** et configurez les options suivantes :
      * **Destination :** entrez `0.0.0.0/0`.
      * **Cible :** choisissez **Passerelle Internet**, puis `Lab IGW` dans la liste.
    * Sélectionnez **Enregistrer les modifications**.
-7. La dernière étape consiste à associer cette nouvelle table de routage au sous-réseau public :
+
+![Resultats](image/image31.png)
+![Resultats](image/image32.png)
+
+8. La dernière étape consiste à associer cette nouvelle table de routage au sous-réseau public :
    * Cliquez sur l'onglet **Associations de sous-réseau**.
    * Choisissez **Modifier des associations de sous-réseau**.
+
+ ![Resultats](image/image33.png)
+
    * Sélectionnez **Public Subnet**.
-   * Choisissez **Enregistrer les associations**.
+
+![Resultats](image/image34.png)
+
+    * Choisissez **Enregistrer les associations**.
+
+![Resultats](image/image35.png)
+![Resultats](image/image36.png)
 
 *Le sous-réseau public est désormais public, car il possède une entrée de table de routage qui envoie le trafic vers Internet par le biais de la passerelle Internet.*
 
@@ -163,13 +240,28 @@ Au cours de cette tâche, vous allez lancer un serveur Bastion d'instance EC2 da
 
 1. Dans la barre de recherche de la Console de gestion AWS, saisissez et sélectionnez `EC2` pour accéder à la Console de gestion EC2.
 2. Dans le volet de navigation de gauche, choisissez **Instances**.
+
+![Resultats](image/image37.png)
+
 3. Choisissez **Lancer des instances** et configurez les options suivantes :
    * Dans la section **Nom et balises**, entrez `Bastion Server`.
-   * Dans la section **Application and OS Images (Amazon Machine Image)**, configurez :
+
+![Resultats](image/image38.png)
+    
+    * Dans la section **Application and OS Images (Amazon Machine Image)**, configurez :
      * **Démarrage rapide :** choisissez `Amazon Linux`.
      * **Amazon Machine Image (AMI) :** choisissez `Amazon Linux 2023 AMI`.
+ 
+ ![Resultats](image/image39.png)
+   
    * Dans la section **Type d'instance**, choisissez `t3.micro`.
+ 
+ ![Resultats](image/image40.png)
+   
    * Dans la section **Paire de clés (connexion)**, choisissez `Continuer sans paire de clés (déconseillé)`.
+   
+![Resultats](image/image41.png)
+     
      > ℹ️ Vous allez utiliser EC2 Instance Connect pour accéder au shell s'exécutant sur l'instance EC2. Une paire de clés n'est donc pas nécessaire pour cet atelier.
    * Dans la section **Paramètres réseau**, choisissez **Modifier** et configurez les options suivantes :
      * **VPC – obligatoire :** choisissez `Lab VPC`.
@@ -177,12 +269,24 @@ Au cours de cette tâche, vous allez lancer un serveur Bastion d'instance EC2 da
      * **Attribuer automatiquement l'adresse IP publique :** choisissez `Activer`.
      * **Pare-feu (groupes de sécurité) :** choisissez `Créer un groupe de sécurité`.
      * **Nom du groupe de sécurité - obligatoire :** entrez `Bastion Security Group`.
-     * **Description - obligatoire :** entrez `Allow SSH`.
+
+![Resultats](image/image42.png)
+
+      * **Description - obligatoire :** entrez `Allow SSH`.
      * **Règles des groupes de sécurité pour le trafic entrant :**
        * **Type :** choisissez `ssh`.
        * **Type de source :** choisissez `N'importe où`.
-4. Choisissez **Lancer l'instance**.
-5. Pour afficher l'instance lancée, choisissez **Afficher toutes les instances**.
+
+![Resultats](image/image43.png)
+
+5. Choisissez **Lancer l'instance**.
+
+![Resultats](image/image44.png)
+![Resultats](image/image46.png)
+
+6. Pour afficher l'instance lancée, choisissez **Afficher toutes les instances**.
+
+![Resultats](image/image54.png)
 
 *Au départ, l'instance EC2 nommée Bastion Server est à l'état **En attente**. Le champ État de l'instance prend ensuite la valeur **En cours d'exécution**, ce qui indique que le démarrage de l'instance est terminé.*
 
@@ -195,20 +299,36 @@ Au cours de cette tâche, vous allez lancer un serveur Bastion d'instance EC2 da
 Au cours de cette tâche, vous allez lancer une passerelle NAT dans le sous-réseau public et configurer la table de routage privée de sorte à faciliter la communication entre les ressources du sous-réseau privé et Internet.
 
 1. Dans la barre de recherche de la console de gestion AWS, entrez `NAT gateways`, cliquez sur la liste **Fonctionnalités**, puis choisissez **NAT gateways (Passerelles NAT)**.
+
+![Resultats](image/image47.png)
+
 2. Choisissez **Créer une passerelle NAT** et configurez les options suivantes :
    * **Nom :** entrez `Lab NAT gateway`.
    * **Sous-réseau :** choisissez `Public Subnet` dans la liste déroulante.
    * Choisissez **Allouer une adresse IP Elastic**.
+
+![Resultats](image/image48.png)
+![Resultats](image/image49.png)
+
 3. Choisissez **Créer une passerelle NAT**.
+
+![Resultats](image/image50.png)
+
 4. Vous allez à présent configurer le sous-réseau privé pour envoyer le trafic Internet vers la passerelle NAT :
    * Dans le volet de navigation de gauche, choisissez **Tables de routage**, puis sélectionnez **Private Route Table**.
    * Cliquez sur l'onglet **Routes**.
+
+ ![Resultats](image/image51.png)
+    
      > ℹ️ La table de routage affiche actuellement une seule entrée qui achemine le trafic localement au sein du VPC. Vous allez ajouter un acheminement supplémentaire pour envoyer le trafic Internet via la passerelle NAT.
    * Choisissez **Modifier des routes**.
    * Choisissez **Ajouter une route** et configurez les options suivantes :
      * **Destination :** entrez `0.0.0.0/0`.
      * **Cible :** choisissez **Passerelle NAT**, puis `nat-` dans la liste.
    * Sélectionnez **Enregistrer les modifications**.
+
+![Resultats](image/image52.png)
+![Resultats](image/image53.png)
 
 *Le trafic réseau des ressources du sous-réseau privé qui souhaitent communiquer avec Internet est désormais dirigé vers la passerelle NAT, qui transmet la demande à Internet. Les réponses transitent par la passerelle NAT vers le sous-réseau privé.*
 
@@ -226,21 +346,38 @@ Au cours de cette tâche, vous allez lancer une instance EC2 dans le sous-résea
 
 1. Suivez les instructions que vous avez utilisées pour lancer le serveur Bastion, puis configurez les options suivantes :
    * Dans la section **Nom et balises**, entrez `Private Instance`.
+
+![Resultats](image/image55.png)
+ 
    * Dans la section **Application and OS Images (Amazon Machine Image)** :
      * **Démarrage rapide :** choisissez `Amazon Linux`.
      * **Amazon Machine Image (AMI) :** choisissez `Amazon Linux 2023 AMI`.
-   * Dans la section **Type d'instance**, choisissez `t3.micro`.
-   * Dans la section **Paire de clés (connexion)**, choisissez `Continuer sans paire de clés (déconseillé)`.
+
+ ![Resultats](image/image56.png)
+ 
+    * Dans la section **Type d'instance**, choisissez `t3.micro`.
+
+![Resultats](image/image57.png)
+  
+    * Dans la section **Paire de clés (connexion)**, choisissez `Continuer sans paire de clés (déconseillé)`.
+
+ ![Resultats](image/image58.png)
    * Dans la section **Paramètres réseau**, choisissez **Modifier** et configurez :
      * **VPC – obligatoire :** choisissez `Lab VPC`.
      * **Sous-réseau :** choisissez `Private Subnet` *(pas le sous-réseau public)*.
      * **Pare-feu (groupes de sécurité) :** choisissez `Créer un groupe de sécurité`.
      * **Nom du groupe de sécurité - obligatoire :** entrez `Private Instance SG`.
+
+![Resultats](image/image59.png)
+  
      * **Description - obligatoire :** entrez `Allow SSH from Bastion`.
      * **Règles des groupes de sécurité pour le trafic entrant :**
        * **Type :** choisissez `ssh`.
        * **Type de source :** choisissez `Personnalisé`.
        * **Source :** choisissez `10.0.0.0/16`.
+
+![Resultats](image/image60.png)
+
    * Développez la section **Détails avancés** et pour **Données utilisateur - facultatif**, collez le script suivant :
      ```bash
      #!/bin/bash
@@ -249,9 +386,17 @@ Au cours de cette tâche, vous allez lancer une instance EC2 dans le sous-résea
      sed -i 's|[#]*PasswordAuthentication no|PasswordAuthentication yes|g' /etc/ssh/sshd_config
      systemctl restart sshd.service
      ```
+      ![Resultats](image/image61.png)
+
      > ℹ️ Ce script permet de se connecter à l'aide d'un mot de passe. Ce script est fourni pour écourter les étapes de l'atelier. Il n'est pas recommandé pour les déploiements d'instance normaux.
-2. Choisissez **Lancer l'instance**.
-3. Pour afficher l'instance lancée, choisissez **Afficher toutes les instances**.
+3. Choisissez **Lancer l'instance**.
+
+![Resultats](image/image62.png)
+![Resultats](image/image63.png)
+
+4. Pour afficher l'instance lancée, choisissez **Afficher toutes les instances**.
+
+![Resultats](image/image64.png)
 
 ### 💻 Connexion au serveur Bastion
 
@@ -281,6 +426,8 @@ Vous allez maintenant vous connecter à l'instance privée, qui se trouve dans l
 1. Si le message *« Are you sure you want to continue connecting » (Voulez-vous vraiment poursuivre la connexion)* s'affiche, entrez `yes`.
 2. Lorsque vous êtes invité(e) à entrer un mot de passe, entrez `lab-password`.
 
+![Resultats](image/image66.png)
+
 *Vous devriez à présent être connecté(e) à l'instance privée. Au cours de cette tâche, vous vous êtes d'abord connecté(e) au serveur Bastion (dans le sous-réseau public), puis à l'instance privée (dans le sous-réseau privé).*
 
 ---
@@ -299,6 +446,8 @@ La dernière partie de ce défi consiste à confirmer que l'instance privée peu
    64 bytes from 176.32.98.166 (176.32.98.166): icmp_seq=1 ttl=222 time=79.2 ms
    64 bytes from 176.32.98.166 (176.32.98.166): icmp_seq=2 ttl=222 time=79.2 ms
    64 bytes from 176.32.98.166 (176.32.98.166): icmp_seq=3 ttl=222 time=79.0 ms
+
+![Resultats](image/image68.png)
 
 *Ce résultat indique que l'instance privée a communiqué avec succès avec amazon.com sur Internet. L'instance privée se trouve dans le sous-réseau privé et la seule façon d'y accéder dans notre cas consiste à passer par la passerelle NAT. Ce résultat confirme que votre configuration réseau a réussi.*
 
