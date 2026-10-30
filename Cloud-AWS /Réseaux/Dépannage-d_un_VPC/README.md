@@ -5,6 +5,9 @@ Dans cet atelier, vous dépannez les configurations d'un cloud privé virtuel (V
 Vous commencez par un environnement qui comprend deux VPC, des instances Amazon Elastic Compute Cloud (Amazon EC2) et d'autres composants de mise en réseau illustrés dans le schéma suivant.
 Ce diagramme montre également quatre cercles numérotés (n° 1 à 4) qui indiquent l'ordre des tâches à effectuer dans cet atelier.
 Vos tâches incluent les suivantes :
+
+![Architecture](image/Architecture.png)
+
 * Création d'un compartiment Amazon Simple Storage Service (Amazon S3) destiné à contenir les données des journaux de flux du VPC
 * Création d'un journal de flux pour capturer tout le trafic IP passant par les interfaces réseau dans le VPC
 * Résolution des problèmes de configuration du VPC pour permettre l'accès aux ressources
