@@ -7,6 +7,8 @@ Dans cet atelier, vous allez vous exercer à utiliser les commandes de l'interfa
 * charger des fichiers dans Amazon S3 pour héberger un site web simple pour le café-pâtisserie ;
 * créer un fichier de commandes utilisable pour mettre à jour le site web statique lorsque vous modifiez localement l'un des fichiers du site web.
 
+![Architecture](image/capture.png)
+
 Les clients pourront accéder au site web que vous avez déployé sur Amazon S3. L'URL du site web est similaire à cet exemple : `http://<nom-du-compartiment>.s3-website-us-west-2.amazonaws.com`. Vous pouvez créer le compartiment et y accéder par le biais de la console de gestion AWS ou de l'AWS CLI.
 
 ---
@@ -48,6 +50,7 @@ Au cours de cette tâche, vous vous connectez à votre instance Amazon EC2 à l'
    ```bash
    pwd
    ```
+![Resultat](image/image1.png)
 
 > **Remarque :** il s'agit du terminal SSH dans lequel vous exécutez les commandes comme indiquées tout au long de l'atelier.
 
@@ -68,6 +71,8 @@ aws configure
 * **Nom de la région par défaut :** entrez `us-west-2`.
 * **Format de sortie par défaut :** entrez `json`.
 
+![Resultat](image/image2.png)
+
 ---
 
 ## Tâche 3 : création d'un compartiment S3 à l'aide de l'AWS CLI
@@ -87,6 +92,8 @@ Voici un exemple de commande qui permet de créer un nouveau compartiment S3. Vo
 aws s3api create-bucket --bucket <twhitlock256> --region us-west-2 --create-bucket-configuration LocationConstraint=us-west-2
 ```
 
+![Resultat](image/image3.png)
+
 Si la commande réussit, vous obtenez une réponse au format JSON avec une paire nom-valeur `Location`, où la valeur reflète le nom du compartiment. Voici un exemple :
 ```json
 {
@@ -103,11 +110,15 @@ La commande `aws iam create-user` de l'AWS CLI crée un nouvel utilisateur IAM p
    ```bash
    aws iam create-user --user-name awsS3user
    ```
+![Resultat](image/image4.png)
+
 
 2. Créez un profil de connexion pour le nouvel utilisateur à l'aide de la commande suivante :
    ```bash
    aws iam create-login-profile --user-name awsS3user --password Training123!
    ```
+
+![Resultat](image/image5.png)
 
 3. Copiez le numéro de compte AWS :
    * Dans la console de gestion AWS, choisissez le menu déroulant du compte `VocLabsUser…` situé en haut à droite de l'écran.
@@ -131,26 +142,51 @@ La commande `aws iam create-user` de l'AWS CLI crée un nouvel utilisateur IAM p
    ```bash
    aws iam list-policies --query "Policies[?contains(PolicyName,'S3')]"
    ```
-   Le résultat affiche les politiques qui ont un attribut `PolicyName` contenant le terme S3. Recherchez la politique qui accorde un accès complet à Amazon S3. Vous utiliserez cette politique à l'étape suivante.
+![Resultat](image/image6.png)
+![Resultat](image/image7.png)
 
-7. Pour accorder à l'utilisateur `awsS3user` un accès complet au compartiment S3, remplacez `<policyYouFound>` dans la commande suivante par l'attribut `PolicyName` approprié figurant dans les résultats, et exécutez la commande modifiée :
+    Le résultat affiche les politiques qui ont un attribut `PolicyName` contenant le terme S3. Recherchez la politique qui accorde un accès complet à Amazon S3. Vous utiliserez cette politique à l'étape suivante.
+
+8. Pour accorder à l'utilisateur `awsS3user` un accès complet au compartiment S3, remplacez `<policyYouFound>` dans la commande suivante par l'attribut `PolicyName` approprié figurant dans les résultats, et exécutez la commande modifiée :
    ```bash
    aws iam attach-user-policy --policy-arn arn:aws:iam::aws:policy/<policyYouFound> --user-name awsS3user
    ```
+![Resultat](image/image8.png)
 
-8. Revenez à la console de gestion AWS et actualisez l'onglet du navigateur.
+9. Revenez à la console de gestion AWS et actualisez l'onglet du navigateur.
 
 ---
 
 ## Tâche 5 : ajustement des autorisations du compartiment S3
 1. Dans la console de gestion AWS, dans la console Amazon S3, choisissez le nom de votre compartiment.
+
+![Resultat](image/image9.png)
+
 2. Accédez aux autorisations, puis, sous **Bloquer l'accès public (paramètres de compartiment)**, choisissez **Modifier**.
+
+![Resultat](image/image10.png)
+
 3. Désélectionnez **Bloquer tous les accès publics**.
+
+![Resultat](image/image11.png)
+
 4. Sélectionnez **Enregistrer les modifications** (et confirmer si vous y êtes invité).
+
+![Resultat](image/image12.png)
+
 5. Dans l'onglet Autorisations, sous **Propriétaire de l'objet**, choisissez **Modifier**.
+
+![Resultat](image/image13.png)
+
 6. Choisissez **Listes ACL activées**.
+
+![Resultat](image/image14.png)
+
 7. Choisissez **Je reconnais que les ACL seront restaurées**.
 8. Sélectionnez **Enregistrer les modifications**.
+
+![Resultat](image/image15.png)
+![Resultat](image/image16.png)
 
 ---
 
@@ -163,6 +199,7 @@ Un fichier contenant le contenu `static-website` du compartiment Amazon S3 devra
    tar xvzf static-website-v2.tar.gz
    cd static-website
    ```
+![Resultat](image/image17.png)
 
 2. Pour confirmer que les fichiers ont été correctement extraits, exécutez la commande `ls`. 
    Vous devriez voir un fichier nommé `index.html` et des répertoires nommés `css` et `images`.
@@ -176,24 +213,35 @@ Une fois les fichiers extraits, vous chargez leur contenu dans Amazon S3. Ces fi
    ```bash
    aws s3 website s3://<my-bucket>/ --index-document index.html
    ```
+![Resultat](image/image18.png)
+
    Ce processus permet de s'assurer que le fichier `index.html` sera connu comme le document d'index.
 
 2. Pour charger les fichiers dans le compartiment, remplacez `<my-bucket>` dans la commande suivante par votre nom de compartiment, et exécutez la commande modifiée :
    ```bash
    aws s3 cp /home/ec2-user/sysops-activity-files/static-website/ s3://<my-bucket>/ --recursive --acl public-read
    ```
-   Notez que la commande de chargement inclut un paramètre de liste de contrôle d'accès (ACL). Ce paramètre indique que les fichiers chargés ont un accès public en lecture. Il inclut également le paramètre `recursive`, qui indique que tous les fichiers du répertoire actuel de votre machine doivent être chargés.
+![Resultat](image/image19.png)
 
-3. Pour vérifier que les fichiers ont été chargés, remplacez `<my-bucket>` dans la commande suivante par votre nom de compartiment, et exécutez la commande modifiée :
+    Notez que la commande de chargement inclut un paramètre de liste de contrôle d'accès (ACL). Ce paramètre indique que les fichiers chargés ont un accès public en lecture. Il inclut également le paramètre `recursive`, qui indique que tous les fichiers du répertoire actuel de votre machine doivent être chargés.
+
+4. Pour vérifier que les fichiers ont été chargés, remplacez `<my-bucket>` dans la commande suivante par votre nom de compartiment, et exécutez la commande modifiée :
    ```bash
    aws s3 ls <my-bucket>
    ```
+![Resultat](image/image20.png)
 
-4. Dans la console de gestion AWS, dans la console Amazon S3, choisissez le nom de votre compartiment.
+5. Dans la console de gestion AWS, dans la console Amazon S3, choisissez le nom de votre compartiment.
 
-5. Choisissez l'onglet **Propriétés**. En bas de cet onglet, notez que le champ **Hébergement de site Web statique** a pour valeur **Activé**. L'exécution de la commande `aws s3 website` de l'AWS CLI active l'hébergement de site web statique pour un compartiment Amazon S3. Cette option est généralement désactivée par défaut.
+6. Choisissez l'onglet **Propriétés**. En bas de cet onglet, notez que le champ **Hébergement de site Web statique** a pour valeur **Activé**. L'exécution de la commande `aws s3 website` de l'AWS CLI active l'hébergement de site web statique pour un compartiment Amazon S3. Cette option est généralement désactivée par défaut.
 
-6. Pour ouvrir l'URL dans une nouvelle page, choisissez l'URL **Point de terminaison de site Web de compartiment** qui s'affiche.
+![Resultat](image/image21.png)
+![Resultat](image/image22.png)
+![Resultat](image/image23.png)
+
+7. Pour ouvrir l'URL dans une nouvelle page, choisissez l'URL **Point de terminaison de site Web de compartiment** qui s'affiche.
+
+![Resultat](image/image24.png)
 
 Félicitations ! Vous avez créé un site web statique accessible au public.
 
@@ -206,6 +254,8 @@ Pour créer un déploiement reproductible, vous créez un fichier de commandes �
    ```bash
    history
    ```
+![Resultat](image/image25.png)
+
    Recherchez la ligne dans laquelle vous avez exécuté la commande `aws s3 cp`. Vous allez placer cette ligne dans votre nouveau fichier de commandes.
 
 2. Pour modifier les répertoires et créer un fichier script, exécutez la commande suivante dans la session de terminal SSH :
@@ -218,6 +268,7 @@ Pour créer un déploiement reproductible, vous créez un fichier de commandes �
    ```bash
    vi update-website.sh
    ```
+![Resultat](image/image27.png)
 
 4. Pour activer le mode édition dans l'éditeur VI, appuyez sur `i`.
 
@@ -226,6 +277,7 @@ Pour créer un déploiement reproductible, vous créez un fichier de commandes �
    #!/bin/bash
    aws s3 cp /home/ec2-user/sysops-activity-files/static-website/ s3://<my-bucket>/ --recursive --acl public-read
    ```
+![Resultat](image/image26.png)
 
 6. Pour enregistrer les modifications et quitter le fichier, appuyez sur `Échap`, entrez `:wq` et appuyez sur `Entrée`.
 
@@ -250,9 +302,13 @@ Pour créer un déploiement reproductible, vous créez un fichier de commandes �
     ```bash
     ./update-website.sh
     ```
+![Resultat](image/image28.png)
+  
     > **Remarque :** la sortie de la ligne de commande doit indiquer que les fichiers ont été copiés dans Amazon S3.
 
 12. Pour voir les modifications proposées au site web, revenez dans le navigateur et actualisez la page du café-pâtisserie.
+
+![Resultat](image/image29.png)
 
 Félicitations ! Vous venez d'effectuer votre première révision du site web.
 
@@ -272,6 +328,8 @@ Pour rendre votre script plus efficace, vous remplacez la commande `aws s3 cp` q
 ```bash
 aws s3 sync /home/ec2-user/sysops-activity-files/static-website/ s3://<my-bucket>/ --acl public-read
 ```
+
+![Resultat](image/image30.png)
 
 Actualisez le site du café-pâtisserie pour voir vos modifications.
 
