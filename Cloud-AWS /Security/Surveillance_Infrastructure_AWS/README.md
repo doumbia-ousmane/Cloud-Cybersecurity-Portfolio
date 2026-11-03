@@ -45,26 +45,56 @@ Vous pouvez utiliser l'agent CloudWatch pour collecter des métriques à partir 
 
 Au cours de cette tâche, vous utilisez Systems Manager pour installer l'agent CloudWatch sur une instance EC2. Vous le configurez pour collecter les métriques des applications et du système.
 
+![Architecture](image/install-agent.png)
+
+
 1. Dans la console de gestion AWS, dans le menu **Services**, sélectionnez **Systems Manager**.
 2. Dans le volet de navigation de gauche, choisissez **Exécuter la commande**.
+
+![Resultat](image/image1.png)
+
 3. Choisissez **Exécuter une commande**.
 4. Sélectionnez le bouton situé à côté de `AWS-ConfigureAWSPackage` (apparaît généralement en haut de la liste). 
+
+![Resultat](image/image2.png)
+
 5. Faites défiler la page jusqu'à la section **Paramètres de la commande** et configurez les informations suivantes :
    * **Action :** sélectionnez `Installer`.
    * **Nom :** entrez `AmazonCloudWatchAgent`.
    * **Version :** entrez `latest`.
+
+![Resultat](image/image3.png)
+
 6. Dans la section **Cibles**, sélectionnez **Choisir les instances manuellement**, puis sous **Instances**, cochez la case en regard de **Web Server**.
+
+![Resultat](image/image4.png)
+
 7. Au bas de la page, choisissez **Exécuter**.
 8. Attendez que **Statut global** prenne la valeur **Succès**.
+
+![Resultat](image/image5.png)
+
 9. Sous **Cibles et sorties**, choisissez à côté de l'instance, puis cliquez sur **Afficher la sortie**.
+
+![Resultat](image/image6.png)
+
 10. Développez **Étape 1 – Sortie**.
     Vous devriez voir le message : `Successfully installed arn:aws:ssm:::package/AmazonCloudWatchAgent`.
-    *(Note : Si le message `Step execution skipped due to unsatisfied preconditions...` s'affiche pour Windows, développez **Étape 2 – Sortie** à la place)*.
+
+![Resultat](image/image7.png)
+
+     *(Note : Si le message `Step execution skipped due to unsatisfied preconditions...` s'affiche pour Windows, développez **Étape 2 – Sortie** à la place)*.
+
+![Resultat](image/image8.png)
+
 
 ### Stockage de la configuration dans Parameter Store
 Vous allez stocker le fichier de configuration dans AWS Systems Manager Parameter Store, où l'agent CloudWatch pourra le récupérer.
 
 1. Dans le volet de navigation de gauche, choisissez **Parameter Store**.
+
+![Resultat](image/image9.png)
+
 2. Choisissez **Créer un paramètre**, puis configurez les informations suivantes :
    * **Nom :** entrez `Monitor-Web-Server`.
    * **Description :** entrez `Collect web logs and system metrics`.
@@ -140,56 +170,126 @@ Vous allez stocker le fichier de configuration dans AWS Systems Manager Paramete
 }
 ```
 
+![Resultat](image/image10.png)
+![Resultat](image/image11.png)
+![Resultat](image/image12.png)
+![Resultat](image/image13.png)
+![Resultat](image/image14.png)
+
 3. Choisissez **Créer un paramètre**.
+
+![Resultat](image/image15.png)
 
 ### Démarrage de l'agent CloudWatch sur l'instance
 1. Dans le volet de navigation de gauche, choisissez **Exécuter la commande**.
+
+![Resultat](image/image16.png)
+
 2. Choisissez **Exécuter la commande**.
 3. Appliquez le filtre : **Préfixe de nom de document : Égal à : `AmazonCloudWatch-ManageAgent`** et appuyez sur Entrée.
+
+![Resultat](image/image17.png)
+![Resultat](image/image18.png)
+
 4. Cochez le bouton à côté de **AmazonCloudWatch-ManageAgent**.
+
+![Resultat](image/image19.png)
+
 5. Dans la section **Paramètres de la commande**, configurez les éléments suivants :
    * **Action :** sélectionnez `configure`.
    * **Mode :** sélectionnez `ec2`.
    * **Optional Configuration Source :** sélectionnez `ssm`.
    * **Optional Configuration Location :** entrez `Monitor-Web-Server`.
    * **Optional Restart :** sélectionnez `yes`.
+
+![Resultat](image/image20.png)
+
 6. Dans la section **Cibles**, sélectionnez **Choisir les instances manuellement**.
 7. Cochez la case à côté de **Web Server**.
+
+![Resultat](image/image21.png)
+
 8. Choisissez **Exécuter** et attendez que le statut passe à **Succès**.
+
+![Resultat](image/image22.png)
+![Resultat](image/image23.png)
 
 ---
 
 ## Tâche 2 : Surveillance des journaux d'application à l'aide de CloudWatch Logs
+
+Vous pouvez utiliser CloudWatch Logs pour surveiller les applications et les systèmes à l'aide des données de journal. Par exemple, CloudWatch Logs peut suivre le nombre d'erreurs survenues dans vos journaux d'applications et vous envoyer une notification lorsque le taux d'erreurs dépasse le seuil que vous avez spécifié.
+
+CloudWatch Logs utilise vos données de journal existantes pour la surveillance ; aucune modification de code n'est donc requise. Vous pouvez par exemple surveiller les journaux d'applications pour rechercher des expressions littérales spécifiques (comme « NullReferenceException ») ou compter le nombre d'occurrences d'une expression littérale à une position particulière dans les données de journal (comme les codes d'état 404 dans un journal d'accès au serveur web). Lorsque l'expression que vous recherchez est trouvée, CloudWatch Logs signale les données à une métrique CloudWatch que vous spécifiez. Les données des journaux sont chiffrées en transit et au repos
+
 Au cours de cette tâche, vous générez des données de journal sur le serveur web, puis surveillez les journaux à l'aide de CloudWatch Logs.
+
+![Architecture](image/cloudwatch-logs.png)
+
 
 ### Génération de données de journal
 1. Choisissez le menu déroulant **Détails** au-dessus des instructions et cliquez sur **Afficher**.
 2. Copiez la valeur de `WebServerIP`.
 3. Ouvrez un nouvel onglet, collez l'adresse IP et appuyez sur Entrée (affichage de la page de test).
+
+![Resultat](image/image24.png)
+
 4. Ajoutez `/start` à la fin de l'URL pour provoquer une erreur 404 (Introuvable).
+
+![Resultat](image/image25.png)
+
 5. Dans la console AWS, accédez au service **CloudWatch**.
 6. Dans le volet de navigation de gauche, sélectionnez **Groupes de journaux**.
+
+![Resultat](image/image26.png)
+
 7. Sélectionnez `HttpAccessLog`, puis cliquez sur le nom du **Flux de journaux** (correspondant à l'ID d'instance).
+
+![Resultat](image/image27.png)
+
 8. Observez la ligne de votre requête `/start` accompagnée du code `404`.
+
+![Resultat](image/image28.png)
+
 
 ### Création d'un filtre de métriques dans CloudWatch Logs
 1. Dans **Groupes de journaux**, cochez la case en regard de `HttpAccessLog`.
 2. Dans le menu déroulant **Actions**, sélectionnez **Créer un filtre de métrique**.
+
+![Resultat](image/image29.png)
+
 3. Collez la ligne suivante dans la zone **Modèle de filtre** :
    ```text
    [ip, id, user, timestamp, request, status_code=404, size]
    ```
+![Resultat](image/image30.png)
+
 4. Dans **Tester le modèle**, sélectionnez l'ID de votre instance EC2 et cliquez sur **Tester le modèle**.
+
+![Resultat](image/image31.png)
+![Resultat](image/image32.png)
+
 5. Choisissez **Suivant**.
 6. Pour **Nom du filtre**, entrez `404Errors`.
 7. Dans **Informations de métrique** :
    * **Espace de noms de métrique :** entrez `LogMetrics`.
    * **Nom de la métrique :** entrez `404Errors`.
    * **Valeur de métrique :** entrez `1`.
+
+![Resultat](image/image34.png)
+![Resultat](image/image35.png)
+![Resultat](image/image36.png)
+![Resultat](image/image37.png)
+
 8. Choisissez **Suivant**, puis **Créer un filtre de métrique**.
+
+![Resultat](image/image38.png)
 
 ### Création d'une alarme à l'aide du filtre
 1. Dans le volet `404Errors`, décochez/cochez la case et choisissez **Créer une alarme**.
+
+![Resultat](image/image39.png)
+
 2. Dans la section **Métriques**, définissez la **Période** sur `1 minute`.
 3. Dans **Conditions**, sélectionnez `Supérieur/égal à` et entrez `5`.
 4. Choisissez **Suivant**.
@@ -200,19 +300,43 @@ Au cours de cette tâche, vous générez des données de journal sur le serveur 
 6. Choisissez **Suivant**.
 7. **Nom de l'alarme :** entrez `404 Errors`.
 8. **Description de l'alarme :** entrez `Alert when too many 404s detected on an instance`.
+
+![Resultat](image/image40.png)
+![Resultat](image/image41.png)
+![Resultat](image/image42.png)
+![Resultat](image/image43.png)
+![Resultat](image/image44.png)
+![Resultat](image/image45.png)
+![Resultat](image/image46.png)
+
 9. Choisissez **Suivant**, puis **Créer une alarme**.
+
+![Resultat](image/image47.png)
+
 10. Accédez à votre boîte de messagerie et cliquez sur le lien **Confirmer l'abonnement** dans l'e-mail reçu.
 11. Générez au moins 5 requêtes d'erreurs (ex: `http://<WebServerIP>/start2`, `/start3`, etc.) pour déclencher l'alarme.
 12. Attendez 1 à 2 minutes pour voir l'état passer en **Alarme** dans CloudWatch et recevoir un message e-mail.
+
+![Resultat](image/image48.png)
+![Resultat](image/image49.png)
 
 ---
 
 ## Tâche 3 : Surveillance des métriques de l'instance à l'aide de CloudWatch
 1. Dans le menu **Services**, choisissez **EC2** > **Instances**.
 2. Cochez **Web Server** et consultez l'onglet **Surveillance**.
+
+![Resultat](image/image50.png)
+
 3. Pour voir les métriques personnalisées internes (mémoire, espace disque) collectées par l'agent :
    * Accédez au service **CloudWatch** > **Métriques** > **Toutes les métriques**.
    * Sélectionnez **CWAgent** > **device, fstype, host, path** (pour l'espace disque) ou **host** (pour la mémoire).
+
+![Resultat](image/image51.png)
+![Resultat](image/image52.png)
+![Resultat](image/image53.png)
+![Resultat](image/image54.png)
+![Resultat](image/image55.png)
 
 ---
 
@@ -220,6 +344,9 @@ Au cours de cette tâche, vous générez des données de journal sur le serveur 
 Au cours de cette tâche, vous créez une notification en temps réel qui vous informe lorsqu'une instance est arrêtée ou résiliée.
 
 1. Dans le service **CloudWatch**, sous **Événements**, choisissez **Règles**.
+
+![Resultat](image/image56.png)
+
 2. Choisissez **Créer une règle**.
 3. Dans **Source de l'événement** :
    * **Nom du service :** sélectionnez `EC2`.
@@ -233,10 +360,19 @@ Au cours de cette tâche, vous créez une notification en temps réel qui vous i
 6. **Nom :** entrez `Instance_Stopped_Terminated`.
 7. Choisissez **Créer une règle**.
 
+![Resultat](image/image57.png)
+![Resultat](image/image58.png)
+![Resultat](image/image59.png)
+![Resultat](image/image60.png)
+
 ### Test de la notification en temps réel
 1. Accédez au service **EC2** > **Instances**.
 2. Cochez **Web Server**.
 3. Choisissez **État de l'instance** > **Arrêter l'instance** > **Arrêter**.
+
+![Resultat](image/image64.png)
+![Resultat](image/image65.png)
+
 4. Vérifiez votre boîte e-mail pour recevoir la notification JSON d'arrêt de l'instance.
 
 ---
