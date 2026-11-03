@@ -13,6 +13,8 @@ L'activité commence par une instance Amazon Elastic Compute Cloud (Amazon EC2) 
 
 Le schéma de l'architecture illustre la configuration que cette activité utilise.
 
+![Architecture](image/architecture.png)
+
 ---
 
 ## Objectifs de l'activité
@@ -55,18 +57,37 @@ Faythe, Frank, Martha et d'autres personnes apportent régulièrement des modifi
 ## Tâche 1 : Modification d'un groupe de sécurité et observation du site web
 1. Dans le menu **Services**, sélectionnez **Calcul**, puis le service **EC2**.
 2. Choisissez **Instances**, puis recherchez et sélectionnez l'instance **Café Web Server (WebSecurityGroup)**.
+
+![Resultat](image/image1.png)
+
 3. Dans l'onglet **Sécurité**, sélectionnez le groupe de sécurité `sg-xxxxxxxxxx`.
+
+![Resultat](image/image2.png)
+
 4. Dans l'onglet **Règles entrantes**, notez qu'une seule règle entrante a été définie, pour l'accès HTTP via le port TCP 80.
+
+![Resultat](image/image3.png)
+
 5. Sélectionnez **Modifier les règles entrantes**, puis **Ajouter une règle** et configurez la règle comme suit :
    * **Type :** sélectionnez `SSH`.
    * **Plage de ports :** saisissez `22`.
    * **Source :** saisissez `My IP`.
+
+![Resultat](image/image4.png)
+ 
    > **Important :** Confirmez que l'accès au port TCP 22 ne sera ouvert qu'à votre adresse IP. L'entrée doit afficher un bloc d'adresse CIDR (Classless Inter-Domain Routing) qui possède une adresse IP particulière suivie de `/32`, et non toutes les adresses IP (qui seraient indiquées par `0.0.0.0/0`).
 6. Au bas de la page, sélectionnez **Enregistrer les règles**.
+
+![Resultat](image/image5.png)
+
 
 ### Observez le site web Café :
 1. Choisissez **Instances**, puis sélectionnez l'instance **Café Web Server**. Cliquez sur l'onglet **Détails**, puis copiez la valeur de **Public IPv4 address** (Adresse IPv4 publique). 
 2. Ouvrez un nouvel onglet de navigateur et accédez à l'adresse `http://<WebServerIP>/cafe/` (remplacez la valeur `<WebServerIP>`).
+
+![Resultat](image/image6.png)
+![Resultat](image/image7.png)
+
 3. Notez que le site web semble normal. Par exemple, les photos sont toutes adaptées à un café-pâtisserie.
 
 ---
@@ -77,17 +98,36 @@ Au cours de cette tâche, vous créez un journal d'activité CloudTrail dans vot
 ### Tâche 2.1 : création d'un journal CloudTrail
 1. Dans le menu **Services** de la console de gestion AWS, sélectionnez **Gestion et gouvernance**, puis **CloudTrail**. Ignorez le message d'accès refusé à `AWSOrganizations` en haut de la console.
 2. Dans le volet de navigation de gauche, sélectionnez **Journaux d'activité**. Si le volet de navigation n'est pas affiché, sélectionnez l'icône représentant trois lignes horizontales en haut à gauche de l'écran. Si vous voyez le message d'avertissement *The option to create an organization trail is not available for this AWS account*, vous pouvez l'ignorer.
+
+![Resultat](image/image8.png)
+
 3. Sélectionnez **Créer un journal d'activité**.
 4. Configurez le journal d'activité comme suit :
    * Pour **Nom du journal de suivi**, saisissez `monitor`.
-     > **Important :** Veillez à bien affecter au champ Nom du journal de suivi la valeur `monitor`, sinon cette activité ne fonctionnera pas comme prévu.
+
+![Resultat](image/image9.png)
+
+      > **Important :** Veillez à bien affecter au champ Nom du journal de suivi la valeur `monitor`, sinon cette activité ne fonctionnera pas comme prévu.
    * Sélectionnez **Create a new S3 bucket** (Créer un compartiment S3).
    * Pour **Compartiment et dossier des journaux de suivi**, saisissez `monitoring####` (les caractères `####` correspondent à quatre chiffres aléatoires).
    * Pour **Alias AWS KMS**, saisissez vos initiales suivies de `-KMS` (par exemple, `kc-KMS`).
    * Choisissez **Suivant**.
-5. Sur la page **Choisir des événements de journaux**, sélectionnez **Suivant**.
-6. Sur la page **Vérifier et créer**, sélectionnez **Créer un journal d'activité**.
-7. Vérifiez que vous voyez votre journal d'activité sur la page **Journaux d'activité**.
+
+![Resultat](image/image10.png)
+
+6. Sur la page **Choisir des événements de journaux**, sélectionnez **Suivant**.
+
+![Resultat](image/image12.png)
+
+7. Sur la page **Vérifier et créer**, sélectionnez **Créer un journal d'activité**.
+
+![Resultat](image/image13.png)
+![Resultat](image/image14.png)
+
+8. Vérifiez que vous voyez votre journal d'activité sur la page **Journaux d'activité**.
+
+![Resultat](image/image15.png)
+
 
 ### Tâche 2.2 : observation du site web piraté
 1. Revenez à l'onglet du navigateur dans lequel vous avez ouvert le site web Café et actualisez la page.
@@ -96,6 +136,9 @@ Au cours de cette tâche, vous créez un journal d'activité CloudTrail dans vot
 3. Il est judicieux d'avoir activé CloudTrail avant que cela ne se produise. CloudTrail peut vous fournir des informations précieuses sur l'activité des utilisateurs sur votre compte.
 4. Dans la console de gestion AWS, accédez au service **EC2** et observez les détails de l'instance **Café Web Server**. Quelque chose vous paraît-il suspect ?
 5. Dans l'onglet **Sécurité**, choisissez à nouveau le groupe de sécurité `sg-xxxxxxxxxx`, puis sélectionnez l'onglet **Règles entrantes**. D'où provient cette entrée supplémentaire ?
+
+![Resultat](image/image16.png)
+
 6. Vous pouvez toujours voir l'entrée que vous avez créée précédemment : la règle qui ouvre le port 22 uniquement pour votre adresse IP. Cependant, vous pouvez également voir qu'une autre personne a créé une règle entrante supplémentaire autorisant l'accès à Secure Shell (SSH) depuis n'importe où (`0.0.0.0/0`).
 7. Qui a créé cette faille de sécurité ? Vous pouvez rechercher les journaux CloudTrail pour en savoir plus.
 
@@ -144,14 +187,21 @@ Au cours de cette tâche, vous vous connectez à l'instance EC2 Café Web Server
    ```bash
    cd ctraillogs
    ```
+![Resultat](image/image17.png)
+
 4. Répertoriez les compartiments S3 pour réafficher le nom exact :
    ```bash
    aws s3 ls
    ```
+![Resultat](image/image18.png)
+
 5. Dans la commande ci-dessous, remplacez `<monitoring####>` par le nom de compartiment réel. Exécutez la commande pour télécharger les journaux CloudTrail :
    ```bash
    aws s3 cp s3://<monitoring####>/ . --recursive
    ```
+
+![Resultat](image/image19.png)
+ 
    > **Important :** S'il n'y avait aucune sortie en ligne de commande, attendez quelques minutes que CloudTrail publie les premiers journaux dans S3 et réexécutez la commande.
 6. Naviguez dans l'arborescence des sous-répertoires jusqu'aux fichiers journaux :
    ```bash
@@ -168,6 +218,8 @@ Au cours de cette tâche, vous vous connectez à l'instance EC2 Café Web Server
    ```bash
    cat <filename.json> | python -m json.tool
    ```
+![Resultat](image/image20.png)
+
 2. Définissez la variable d'adresse IP du serveur web :
    ```bash
    ip=<WebServerIP>
@@ -176,30 +228,49 @@ Au cours de cette tâche, vous vous connectez à l'instance EC2 Café Web Server
    ```bash
    for i in $(ls); do echo $i && cat $i | python -m json.tool | grep sourceIPAddress ; done
    ```
+![Resultat](image/image22.png)
+
 4. Exécutez une commande similaire pour filtrer les entrées sur la valeur `eventName` :
    ```bash
    for i in $(ls); do echo $i && cat $i | python -m json.tool | grep eventName ; done
    ```
+![Resultat](image/image23.png)
+
 
 ### Tâche 3.5 : analyse des journaux à l'aide des commandes CloudTrail de l'AWS CLI
 1. Recherchez les connexions à la console :
    ```bash
    aws cloudtrail lookup-events --lookup-attributes AttributeKey=EventName,AttributeValue=ConsoleLogin
    ```
+
+![Resultat](image/image24.png)
+
 2. Recherchez toutes les actions effectuées sur les groupes de sécurité dans le compte AWS :
    ```bash
    aws cloudtrail lookup-events --lookup-attributes AttributeKey=ResourceType,AttributeValue=AWS::EC2::SecurityGroup --output text
    ```
+
+![Resultat](image/image25.png)
+
 3. Récupérez dynamiquement l'ID du groupe de sécurité de l'instance Café Web Server :
    ```bash
    region=$(curl http://169.254.169.254/latest/dynamic/instance-identity/document|grep region | cut -d '"' -f4)
+
+![Resultat](image/image26.png)
+
+```
    sgId=$(aws ec2 describe-instances --filters "Name=tag:Name,Values='Cafe Web Server'" --query 'Reservations[*].Instances[*].SecurityGroups[*].[GroupId]' --region $region --output text)
    echo $sgId
    ```
+![Resultat](image/image27.png)
+
 4. Filtrez les événements CloudTrail spécifiques à cet ID de groupe de sécurité :
    ```bash
    aws cloudtrail lookup-events --lookup-attributes AttributeKey=ResourceType,AttributeValue=AWS::EC2::SecurityGroup --region $region --output text | grep $sgId
    ```
+
+![Resultat](image/image28.png)
+
 
 ---
 
@@ -208,28 +279,54 @@ Au cours de cette tâche, vous vous connectez à l'instance EC2 Café Web Server
 ### Tâche 4.1 : création de la table Athena
 1. Dans la console de gestion AWS, ouvrez le service **CloudTrail**.
 2. Dans le volet de navigation, sélectionnez **Historique des événements**.
+
+![Resultat](image/image29.png)
+
 3. Cliquez sur **Créer une table Athena**.
 4. **Emplacement de stockage :** choisissez le compartiment S3 `monitoring####`.
 5. Analysez l'instruction `CREATE TABLE` d'Athena et sélectionnez **Créer une table**.
+
+![Resultat](image/image30.png)
+![Resultat](image/image31.png)
+![Resultat](image/image32.png)
+
 6. Dans le menu **Services**, sélectionnez **Analytique**, puis le service **Athena**.
+
+![Resultat](image/image33.png)
+
 
 ### Tâche 4.2 : analyse des journaux à l'aide d'Athena
 1. Dans l'Éditeur de requêtes Athena, configurez l'emplacement des résultats :
    * Sélectionnez **Paramètres**, puis **Gérer**.
    * Affectez au champ **Emplacement du résultat de la requête** la valeur `s3://monitoring####/results/` (remplacez `monitoring####`).
    * Sélectionnez **Enregistrer**.
+
+![Resultat](image/image40.png)
+![Resultat](image/image41.png)
+![Resultat](image/image42.png)
+
 2. Dans l'onglet Éditeur, collez et exécutez la requête SQL suivante (remplacez `####`) :
    ```sql
    SELECT *
    FROM cloudtrail_logs_monitoring####
    LIMIT 5
    ```
+
+![Resultat](image/image43.png)
+![Resultat](image/image44.png)
+![Resultat](image/image45.png)
+
 3. Exécutez une nouvelle requête ciblant spécifiquement les colonnes utiles :
    ```sql
    SELECT useridentity.userName, eventtime, eventsource, eventname, requestparameters
    FROM cloudtrail_logs_monitoring####
    LIMIT 30
    ```
+
+![Resultat](image/image48.png)
+![Resultat](image/image49.png)
+![Resultat](image/image50.png)
+![Resultat](image/image51.png)
 
 ---
 
@@ -262,33 +359,50 @@ Exécutez différentes requêtes SQL pour trouver les informations clés concern
    ```bash
    sudo aureport --auth
    ```
+![Resultat](image/image59.png)
+
    *(Un utilisateur `chaos-user` apparaît).*
 2. Vérifiez qui est actuellement connecté :
    ```bash
    who
    ```
+
+![Resultat](image/image60.png)
+
 3. Tentez de supprimer l'utilisateur `chaos-user` :
    ```bash
    sudo userdel -r chaos-user
    ```
+
+![Resultat](image/image61.png)
+
 4. Si la commande échoue car il est connecté, arrêtez son processus en remplaçant `ProcNum` par le numéro affiché :
    ```bash
    sudo kill -9 ProcNum
    ```
+![Resultat](image/image62.png)
+
 5. Vérifiez qu'il n'est plus connecté avec `who`, puis supprimez-le définitivement :
    ```bash
    sudo userdel -r chaos-user
    ```
+
+![Resultat](image/image64.png)
+
 6. Vérifiez les comptes d'utilisateurs actifs :
    ```bash
    sudo cat /etc/passwd | grep -v nologin
    ```
+![Resultat](image/image65.png)
+
 
 ### Tâche 5.2 : mise à jour de la sécurité SSH
 1. Vérifiez la date de modification du fichier de configuration SSH :
    ```bash
    sudo ls -l /etc/ssh/sshd_config
    ```
+![Resultat](image/image66.png)
+
 2. Éditez le fichier `/etc/ssh/sshd_config` avec VI :
    ```bash
    sudo vi /etc/ssh/sshd_config
@@ -296,12 +410,23 @@ Exécutez différentes requêtes SQL pour trouver les informations clés concern
 3. Saisissez `:set number` pour afficher les numéros de ligne :
    * À la ligne 61, passez en mode Édition (`i` ou `a`) et mettez la ligne en commentaire : `#PasswordAuthentication yes`.
    * À la ligne 63, décommentez la ligne : `PasswordAuthentication no`.
+
+![Resultat](image/image67.png)
+![Resultat](image/image68.png)
+
 4. Appuyez sur `Échap`, puis enregistrez et quittez avec `:wq`.
 5. Redémarrez le service SSH :
    ```bash
    sudo service sshd restart
    ```
+
+![Resultat](image/image69.png)
+
 6. Dans la console **EC2**, accédez au groupe de sécurité du serveur web (`sg-xxxxxxxxxx`), sélectionnez l'onglet **Règles entrantes** > **Modifier**, et **supprimez la règle entrante autorisant le port 22 depuis `0.0.0.0/0`**. Enregistrez les modifications.
+
+![Resultat](image/image70.png)
+![Resultat](image/image71.png)
+![Resultat](image/image72.png)
 
 ### Tâche 5.3 : correction du site web
 1. Naviguez dans le répertoire des images :
@@ -309,16 +434,28 @@ Exécutez différentes requêtes SQL pour trouver les informations clés concern
    cd /var/www/html/cafe/images/
    ls -l
    ```
+
+![Resultat](image/image73.png)
+
 2. Restaurez le fichier image d'origine sauvegardé par le pirate :
    ```bash
    sudo mv Coffee-and-Pastries.backup Coffee-and-Pastries.jpg
    ```
+
+![Resultat](image/image74.png)
+
 3. Rechargez le site web `http://<WebServerIP>/cafe/` dans votre navigateur (`Maj + Actualiser`) pour vérifier le rétablissement de l'image.
+
+![Resultat](image/image78.png)
 
 ### Tâche 5.4 : suppression de l'utilisateur pirate AWS
 1. Dans la console de gestion AWS, sélectionnez **Services**, puis **IAM**.
 2. Cliquez sur **Utilisateurs** et cochez la case de l'utilisateur `chaos`.
 3. Sélectionnez **Supprimer**, saisissez `chaos` pour confirmer et validez.
+
+![Resultat](image/image75.png)
+![Resultat](image/image76.png)
+![Resultat](image/image77.png)
 
 ---
 
