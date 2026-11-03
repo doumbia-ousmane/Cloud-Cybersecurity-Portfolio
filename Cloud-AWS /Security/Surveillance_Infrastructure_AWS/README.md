@@ -323,6 +323,13 @@ Au cours de cette tâche, vous générez des données de journal sur le serveur 
 ---
 
 ## Tâche 3 : Surveillance des métriques de l'instance à l'aide de CloudWatch
+
+Les métriques sont des données sur les performances de vos systèmes. CloudWatch stocke les métriques des services AWS que vous utilisez. Vous pouvez également publier vos propres métriques d'application via l'agent CloudWatch ou directement depuis votre application. CloudWatch peut présenter les métriques de recherche, de graphiques, de tableaux de bord et d'alarmes.
+
+Au cours de cette tâche, vous utilisez les métriques fournies par CloudWatch.
+
+![Architecture](image/cloudwatch-metrics.png)
+
 1. Dans le menu **Services**, choisissez **EC2** > **Instances**.
 2. Cochez **Web Server** et consultez l'onglet **Surveillance**.
 
@@ -341,7 +348,14 @@ Au cours de cette tâche, vous générez des données de journal sur le serveur 
 ---
 
 ## Tâche 4 : Création de notifications en temps réel
+
+CloudWatch Events fournit un flux d'événements système en quasi temps réel, qui décrit les modifications apportées aux ressources AWS. Des règles simples peuvent faire correspondre les événements et les router vers un ou plusieurs flux ou fonctions cibles. CloudWatch Events détecte les changements opérationnels dès qu'ils se produisent.
+
+CloudWatch Events répond à ces changements opérationnels et prend les mesures correctives nécessaires en envoyant des messages pour répondre à l'environnement, en activant des fonctions, en procédant à des modifications et en enregistrant des informations d'état. Vous pouvez également utiliser CloudWatch Events pour planifier des actions automatisées qui se déclenchent automatiquement à certaines heures à l'aide d'expressions cron ou de fréquence.
+
 Au cours de cette tâche, vous créez une notification en temps réel qui vous informe lorsqu'une instance est arrêtée ou résiliée.
+
+![Architecture](image/cloudwatch-events.png)
 
 1. Dans le service **CloudWatch**, sous **Événements**, choisissez **Règles**.
 
@@ -378,6 +392,11 @@ Au cours de cette tâche, vous créez une notification en temps réel qui vous i
 ---
 
 ## Tâche 5 : Surveillance de la conformité de l'infrastructure
+
+AWS Config vous permet d'évaluer, d'auditer et d'apprécier les configurations de vos ressources AWS. AWS Config surveille et enregistre en permanence les configurations de vos ressources AWS et vous permet d'automatiser l'évaluation des configurations enregistrées par rapport aux configurations souhaitées.
+
+Avec AWS Config, vous pouvez examiner les changements de configuration et les relations entre les ressources AWS, consulter l'historique détaillé de la configuration des ressources et déterminer votre conformité globale par rapport aux configurations spécifiées dans vos directives internes. Avec AWS Config, vous pouvez simplifier l'audit de conformité, l'analyse de la sécurité, la gestion des modifications et la résolution des problèmes opérationnels.
+
 Au cours de cette tâche, vous activez des règles AWS Config pour garantir la conformité du balisage et des volumes Amazon EBS.
 
 1. Dans le menu **Services**, choisissez **Config**. *(Si c'est la première utilisation, cliquez sur Démarrer > Suivant > Suivant > Confirmer)*.
