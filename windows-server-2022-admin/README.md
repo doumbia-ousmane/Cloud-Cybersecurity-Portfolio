@@ -42,8 +42,8 @@ Détails : [docs/architecture.md](docs/architecture.md) et [docs/plan-adressage.
 | 02 | [Active Directory Domain Services](02-active-directory/README.md) | Terminé |
 | 03 | [DHCP et jonction d'un poste au domaine](03-dns-dhcp/README.md) | Terminé (reste : reconstruction du routeur, voir dépannage 012) |
 | 04 | [Stratégies de groupe (GPO) et sécurité des comptes](04-gpo/README.md) | Terminé |
-| 05 | Serveur de fichiers et permissions (dont lecteurs réseau) | À faire (prochaine phase) |
-| 06 | Sécurité et durcissement | À faire |
+| 05 | [Serveur de fichiers, permissions NTFS (AGDLP) et lecteurs réseau](05-fichiers-permissions/README.md) | Terminé |
+| 06 | [Sécurité et durcissement](06-securite-hardening/README.md) | Terminé |
 | 07 | Supervision et journaux | À faire |
 | 08 | Sauvegarde et restauration | À faire |
 | 09 | Services avancés (2e DC, IIS, WSUS...) | À faire |
