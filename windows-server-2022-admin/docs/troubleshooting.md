@@ -131,3 +131,43 @@ Chaque entrée : symptôme, diagnostic, cause, solution.
 - **Cause** : mot de passe oublié (saisi de façon masquée lors de la création manuelle du compte).
 - **Solution** : sur DC01, `Set-ADAccountPassword -Identity awa.traore -Reset -NewPassword $mdp`, `Set-ADUser awa.traore -ChangePasswordAtLogon $true`, `Unlock-ADAccount awa.traore`. À la connexion suivante, Windows affiche « The user's password must be changed before signing in », comportement attendu ; après le changement, `whoami` renvoie `doumbiacorp\awa.traore`.
 - **Leçon** : un administrateur réinitialise un mot de passe sans connaître l'ancien (`-Reset`) ; conserver les mots de passe de lab dans un gestionnaire.
+
+## 015 : `Remove-NetIPAddress` ne trouve aucune adresse sur SRV02
+
+- **Date** : 2026-11-05
+- **Symptôme** : `Remove-NetIPAddress : Aucun objet MSFT_NetIPAddress correspondant n'a été trouvé` (interface `Ethernet`) lors du réglage de l'IP fixe de SRV02.
+- **Cause** : SRV02, fraîchement installé, n'avait aucune adresse IPv4 à supprimer ; la commande de nettoyage n'avait rien à faire.
+- **Solution** : aucune ; message sans gravité. L'IP fixe, le DNS et la résolution de `doumbiacorp.local` ont été vérifiés ensuite.
+- **Leçon** : une commande de nettoyage peut signaler « rien à supprimer » ; vérifier toujours l'état final plutôt que de se fier à l'absence ou à la présence d'une erreur.
+
+## 016 : double message d'erreur sur un partage refusé
+
+- **Date** : 2026-11-05
+- **Symptôme** : `dir \\SRV02\Finance` depuis un compte RH affiche `Access is denied`, puis `Cannot find path ... because it does not exist`. Même comportement pour `RH` et `IT` avec un compte Finance. Par ailleurs, le tout premier `Test-Connection` vers `192.168.10.1` a renvoyé `False` avant un `True` au second essai.
+- **Cause** : le premier message est le vrai (le partage existe, le compte n'a pas de droit). Le second semble être un effet d'affichage de PowerShell sur les chemins réseau refusés (nouvelle tentative, puis conclusion de chemin introuvable). Pour le ping, le premier paquet est souvent perdu pendant l'apprentissage de l'adresse MAC.
+- **Solution** : aucune. Pour confirmer qu'un partage existe, interroger le serveur avec un compte administrateur (`Get-SmbShare` sur SRV02).
+- **Leçon** : lire le premier message d'erreur, qui est le plus informatif ; refaire un test réseau avant de conclure à une panne.
+
+## 017 : `Get-SmbShare` utilisé à la place de `Set-SmbShare`
+
+- **Date** : 2026-11-09
+- **Symptôme** : `Get-SmbShare : Impossible de trouver un paramètre correspondant au nom « Force »`, puis `Aucun objet MSFT_SMBShare correspondant n'a été trouvé` (requête sur `EncryptData = TRUE`).
+- **Cause** : commande saisie avec `Get-` (lire) au lieu de `Set-` (modifier). `Get-SmbShare` n'a pas de paramètre `-Force`, et sans lui elle cherchait un partage déjà chiffré, ce qui confirmait au passage qu'aucun ne l'était. Rien n'avait été modifié.
+- **Solution** : `Set-SmbShare -Name RH -EncryptData $true -Force` (et de même pour `Finance`), puis `Get-SmbShare` pour vérifier.
+- **Leçon** : `Get` lit, `Set` écrit. Relire le verbe avant de valider une commande de modification.
+
+## 018 : `Get-WinEvent` ne trouve aucun événement (faute de frappe)
+
+- **Date** : 2026-11-09
+- **Symptôme** : `Get-WinEvent : Aucun événement correspondant aux critères de sélection spécifiés n'a été trouvé` lors de la recherche des événements d'audit.
+- **Cause** : clé du filtre mal écrite (`StarTime` au lieu de `StartTime`). Une faute dans le filtre donne « aucun événement » plutôt qu'une erreur de syntaxe explicite. D'autres explications étaient à écarter : commande lancée sur la mauvaise machine (DC01 au lieu de SRV02), tests pas encore faits ou antérieurs à la fenêtre de temps.
+- **Solution** : correction de la clé ; les événements 4625, 4663 et 5140 sont apparus.
+- **Leçon** : devant « aucun résultat », vérifier d'abord la commande (`hostname`, fenêtre de temps, orthographe des clés) avant de soupçonner la configuration.
+
+## 019 : taille du journal Sécurité inchangée après `gpupdate /force`
+
+- **Date** : 2026-11-13
+- **Symptôme** : après application de la GPO (taille maximale de 131072 Ko), `MaximumSizeInBytes` restait à `20971520`.
+- **Cause** : le réglage était bien arrivé sur SRV02 (`HKLM:\SOFTWARE\Policies\Microsoft\Windows\EventLog\Security`, `MaxSize = 131072`), mais le service Journal des événements ne le relit, à ma connaissance, qu'à son démarrage.
+- **Solution** : redémarrage de SRV02 (le service seul est déconseillé : d'autres services en dépendent). `MaximumSizeInBytes` est passé à `134217728`.
+- **Leçon** : distinguer « réglage reçu » (registre) de « réglage appliqué » (service) ; la clé de registre de la stratégie tranche entre une GPO incomplète et un service qui n'a pas relu sa configuration.
