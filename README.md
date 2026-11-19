@@ -1,8 +1,6 @@
 # Cloud-Cybersecurity-Portfolio
 
 
-New-Item -Path C:\Scripts, C:\Rapports -ItemType Directory -Force | Out-Null
-
 @'
 $horodatage = Get-Date -Format "yyyy-MM-dd_HH-mm"
 $fichier = "C:\Rapports\bilan-$($env:COMPUTERNAME)-$horodatage.txt"
@@ -23,14 +21,33 @@ foreach ($d in Get-CimInstance Win32_LogicalDisk -Filter "DriveType=3") {
     $libre = [math]::Round(100 * $d.FreeSpace / $d.Size, 1)
     Ajouter ("  {0} {1} % libre ({2} Go sur {3} Go)" -f $d.DeviceID, $libre, [math]::Round($d.FreeSpace/1GB,1), [math]::Round($d.Size/1GB,1))
 }
-$arretes = @(Get-CimInstance Win32_Service -Filter "StartMode='Auto' AND State<>'Running'")
-Ajouter "Services automatiques arretes : $($arretes.Count)"
-foreach ($s in $arretes) { Ajouter "  - $($s.Name)" }
-$echecs = @(Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4625; StartTime=(Get-Date).AddHours(-24)} -ErrorAction SilentlyContinue)
-Ajouter "Echecs d'ouverture de session (24 h) : $($echecs.Count)"
-$partages = @(Get-SmbShare -ErrorAction SilentlyContinue | Where-Object { -not $_.Special })
-Ajouter "Partages : $($partages.Count)"
-foreach ($p in $partages) { Ajouter "  - $($p.Name) -> $($p.Path)" }
+
+try {
+    $arretes = @(Get-CimInstance Win32_Service -ErrorAction Stop | Where-Object { $_.StartMode -eq 'Auto' -and $_.State -ne 'Running' })
+    Ajouter "Services automatiques arretes : $($arretes.Count)"
+    foreach ($s in $arretes) { Ajouter "  - $($s.Name)" }
+} catch {
+    Ajouter "Services automatiques arretes : ERREUR de lecture"
+}
+
+try {
+    $echecs = @(Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4625; StartTime=(Get-Date).AddHours(-24)} -ErrorAction Stop)
+    Ajouter "Echecs d'ouverture de session (24 h) : $($echecs.Count)"
+} catch {
+    if ($_.FullyQualifiedErrorId -like 'NoMatchingEventsFound*') {
+        Ajouter "Echecs d'ouverture de session (24 h) : 0"
+    } else {
+        Ajouter "Echecs d'ouverture de session (24 h) : ERREUR de lecture du journal"
+    }
+}
+
+try {
+    $partages = @(Get-SmbShare -ErrorAction Stop | Where-Object { -not $_.Special })
+    Ajouter "Partages : $($partages.Count)"
+    foreach ($p in $partages) { Ajouter "  - $($p.Name) : $($p.Path)" }
+} catch {
+    Ajouter "Partages : ERREUR de lecture"
+}
 
 $lignes | Out-File $fichier -Encoding utf8
 $lignes
